@@ -4,10 +4,8 @@ import matplotlib.pyplot as plt
 import scipy as sp
 from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization! 
 
-#nis
-#test2
-def g(x):
-    return (x**2. * np.sin(20*x) + np.cos(x-np.pi))**3 + 1
+#Compute the gradient and the Hessian for all functions and determine the set of stationary points 
+#and characterize every stationary point whether it is a saddle point, (strict) local/global minimum or maximum
 
 #1
 def f(x, y):
@@ -25,11 +23,8 @@ def f3(x,y):
 def f4(x,y):
     return (ln(1 + 0.5*(x**2. + 3*y**2.)))
 
-
-
 x = np.linspace(-1, 1, 100)
 y = np.linspace(-1, 1, 100)
-
 
 X, Y = np.meshgrid(x, y)
 Z = f(X, Y)
@@ -41,9 +36,9 @@ ax.set_ylabel('y')
 ax.set_zlabel('z')
 ax.set_title('3D contour')
 
-#plt.show()  REMOVE COMMENT
+#plt.show()  ***REMOVE COMMENT***
 
-#gradient of f
+#gradient of f1
 gradF = np.gradient(f(x,y))
 
 print (f(x,y))
