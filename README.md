@@ -9,3 +9,6 @@ https://math.stackexchange.com/questions/1011563/norm-with-symmetric-positive-de
 
 Zadatak 3 3)
 https://math.stackexchange.com/questions/730421/is-aat-a-positive-definite-symmetric-matrix
+
+Zadatak 5 1)
+https://people.richland.edu/james/ictcm/2006/simplex.html
