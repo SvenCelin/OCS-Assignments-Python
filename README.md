@@ -1,3 +1,4 @@
 # OCS-Assignment1-Python
 
-Stavite linkove ovdje
+Gradient, Hessian etc
+https://pypi.org/project/numdifftools/
