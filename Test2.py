@@ -4,6 +4,7 @@ import scipy as sp
 from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization! 
 
 #nis
+#test2
 def g(x):
     return (x**2. * np.sin(20*x) + np.cos(x-np.pi))**3 + 1
 
