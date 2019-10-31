@@ -23,11 +23,21 @@ def f3(x,y):
 def f4(x,y):
     return (ln(1 + 0.5*(x**2. + 3*y**2.)))
 
-x = np.linspace(-1, 1, 100)
-y = np.linspace(-1, 1, 100)
+def determinantX(func, x, y):
+    return (func(x + 0.001, y) - func(x - 0.001, y))/0.002
+
+def determinantY(func, x, y):
+    return (func(x, y + 0.001) - func(x, y - 0.001))/0.002
+
+x = np.linspace(-5, 5, 100)
+y = np.linspace(-5, 5, 100)
 
 X, Y = np.meshgrid(x, y)
 Z = f(X, Y)
+#Z = f2(X, Y)
+#Z = f3(X, Y)
+#Z = f4(X, Y)
+
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.contour3D(X, Y, Z, 50, cmap='binary')
@@ -36,10 +46,18 @@ ax.set_ylabel('y')
 ax.set_zlabel('z')
 ax.set_title('3D contour')
 
-#plt.show()  ***REMOVE COMMENT***
+plt.show()  #***REMOVE COMMENT***
 
 #gradient of f1
+print("New Print")
+gradF = np.gradient(f(x,y), x)
+
+#print (f(x,y))
+print (gradF)
+
+
+print("New Print")
 gradF = np.gradient(f(x,y))
 
-print (f(x,y))
+#print (f(x,y))
 print (gradF)
