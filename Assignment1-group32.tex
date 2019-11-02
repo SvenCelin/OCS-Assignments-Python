@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}         %% What type of document you're writing.
+\documentclass[9pt]{article}         %% What type of document you're writing.
 
 %%%%% Preamble
 
@@ -6,6 +6,8 @@
 
 \usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
 \usepackage[utf8]{inputenc}
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
 
 %% Title Information.
 
@@ -21,24 +23,47 @@
 
 
 \section{Characterization of Functions}
-Consider the two points $(-1,16)$ and $(3,1)$.  Section~\ref{sec: distance}
-computes the distance between these two points.  Section~\ref{sec: linear fit}
-computes a linear equation $y = m x + b$ through the two points, and
-Section~\ref{sec: exponential fit} fits a exponential equation $y = A e^{k x}$
-through the two points.
 
-
-\section{Distance}
-\label{sec: distance}
-We can use the distance formula
 \begin{equation}
-\label{eqn: distance}
-	d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+	f(x,y) = 2x^3 - 6y^2 + 3x^2 y
 \end{equation}
+
+
+\begin{equation}
+	f(x,y) = (x - 2y)^4 + 64xy
+\end{equation}
+
+
+\begin{equation}
+	f(x,y) = 2x^2 +3y^2 - 2xy + 2x - 3y
+\end{equation}
+
+
+\begin{equation}
+	f(x,y) = \ln(1 + \dfrac{1}{2}(x^2 +3y^2))
+\end{equation}
+
+
+
+%Consider the two points $(-1,16)$ and $(3,1)$.  quation $y = m x + b$ through the two points, and
+%Section fits a exponential equation $y = A e^{k x}$
+% $y$-intercept $b$ of the line.
+
+
+\section{Numerical Gradient Approximation}
+
+
+\begin{equation}
+	\nabla_x f(x,y) \approx \dfrac{f(x + \epsilon, y) - f(x - \epsilon, y)}{2\epsilon}
+\end{equation}
+
+\begin{equation}
+	\nabla_x f(x,y) \approx \dfrac{f(x, y + \epsilon) - f(x, y - \epsilon)}{2\epsilon}
+\end{equation}
+
 to determine the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$
 in $\mathbb{R}^2$.  For our example, $(x_1, y_1) = (-1, 16)$ and $(x_2, y_2) =
-(3, 1)$, so plugging these values into the distance formula~\eqref{eqn:
-distance} tell us the distance between the two points is
+(3, 1)$, so plugging these values into the distance formula tell us the distance between the two points is
 $$
 	d 
 	= \sqrt{(3 - (-1))^2 + (1 - 16)^2}
@@ -47,34 +72,13 @@ $$
 	.
 $$
 
-\section{Linear Fit}
-\label{sec: linear fit}
-Consider a linear equation $y = m x + b$ through the two points.  We will
-first determine the slope $m$ of the line in Section~\ref{sec: slope}, and we
-will then determine the $y$-intercept $b$ of the line in Section~\ref{sec:
-intercept}.
 
-\subsection{Slope}
-\label{sec: slope}
 
-The slope of the line passing through the two points is given by the forumula
-$$
-	m 
-	= \frac{\Delta y}{\Delta x} 
-	= \frac{y_2 - y_1}{x_2 - x_1}
-	.
-$$
-Plugging in our two points, we find the slope of the line between them is
-\begin{equation}
-\label{eqn: slope}
-	m 
-	= \frac{1 - 16}{3 - (-1)}
-	= - \frac{15}{4}
-	.
-\end{equation}
+\section{Vectors, Norms and Matrices}
+
 
 \subsection{Intercept}
-\label{sec: intercept}
+
 
 To find the $y$-intercept of the line, we start with the point-slope form of
 the line of slope $m$ through the point $(x_0, y_0)$:
@@ -83,7 +87,7 @@ $$
 	.
 $$
 We plug in the point $(x_0, y_0) = (-1, 16)$ and the slope we found
-previously~\eqref{eqn: slope} to obtain the equation
+previously to obtain the equation
 $$
 	y - 16 = - \frac{15}{4} (x + 1)
 	.
@@ -99,8 +103,8 @@ Therefore, the $y$-intercept is $b = 49/4$, and the equation
 $y = - \frac{15}{4} x + \frac{49}{4}$ describes the line through the two
 points.
 
-\section{Exponential Fit}
-\label{sec: exponential fit}
+\section{Matrix Calculus}
+
 
 Let us consider the exponential function $y = A e^{k x}$.  For this function
 to pass through both points, we must find constants $A$ and $k$ that satisfy
@@ -135,5 +139,9 @@ $$
 	= 8 \left( \frac{1}{2} \right)^x
 	.
 $$
+
+\section{Student Task Selection Problem}
+
+
 \end{document}
 
