@@ -1,0 +1,198 @@
+\documentclass[9pt]{article}         %% What type of document you're writing.
+
+%%%%% Preamble
+
+%% Packages to use
+
+\usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
+\usepackage[utf8]{inputenc}
+\usepackage{chngcntr}
+\counterwithin*{equation}{section}
+
+%% Title Information.
+
+\title{Assignment 1 \\ OCS}
+\author{Marko Ivančić \and Mauro Jurada}
+\date{2 November 2019}           %% By default, LaTeX uses the current date
+
+%%%%% The Document
+
+\begin{document}
+
+\maketitle
+
+
+\section{Characterization of Functions}
+
+\begin{equation}
+	f(x,y) = 2x^3 - 6y^2 + 3x^2 y
+\end{equation}
+
+INSERT PLOT
+\begin{gather}
+Hessian = 
+  \begin{bmatrix}
+  12 X + 6Y &
+   6X\\
+   6X &
+   -12 
+   \end{bmatrix}
+    \nonumber %%no numerating the eq
+\end{gather}
+
+//Stationary points: X = -4, Y = 0
+
+\begin{equation}
+	f(x,y) = (x - 2y)^4 + 64xy
+\end{equation}
+
+INSERT PLOT
+\begin{gather}
+Hessian = 
+  \begin{bmatrix}
+  12 (X - 2Y)^2 &
+  -24 (X - 2Y)^2 + 64\\
+  -24 (X - 2Y)^2  +64 &
+  48 (X - 2Y)^2 
+   \end{bmatrix}
+    \nonumber
+\end{gather}
+
+//Stationary points: X = -2Y, Y = 0
+
+\begin{equation}
+	f(x,y) = 2x^2 +3y^2 - 2xy + 2x - 3y
+\end{equation}
+
+INSERT PLOT
+\begin{gather}
+Hessian = 
+  \begin{bmatrix}
+   4 &
+   -2\\
+   -2 &
+   6 
+   \end{bmatrix}
+   \nonumber
+\end{gather}
+
+//Stationary points: X = -4, Y = 0
+
+\begin{equation}
+	f(x,y) = \ln(1 + \dfrac{1}{2}(x^2 +3y^2))
+\end{equation}
+
+INSERT PLOT
+\begin{gather}
+Hessian = 
+  \begin{bmatrix}
+   \frac{4 - 2X^2 +6Y^2}{(2 + X^2 + 3Y^2)^2} &
+   \frac{-12XY}{(2 + X^2 + 3Y^2)^2}\\
+   \frac{-12XY}{(2 + X^2 + 3Y^2)^2} &
+   \frac{12 + 6X^2 - 18Y^2}{(2 + X^2 + 3Y^2)^2} 
+   \end{bmatrix}
+    \nonumber
+\end{gather}
+
+//Stationary points: X = -4, Y = 0
+
+%Consider the two points $(-1,16)$ and $(3,1)$.  quation $y = m x + b$ through the two points, and
+%Section fits a exponential equation $y = A e^{k x}$
+% $y$-intercept $b$ of the line.
+
+
+\section{Numerical Gradient Approximation}
+
+
+\begin{equation}
+	\nabla_x f(x,y) \approx \dfrac{f(x + \epsilon, y) - f(x - \epsilon, y)}{2\epsilon}
+\end{equation}
+
+\begin{equation}
+	\nabla_x f(x,y) \approx \dfrac{f(x, y + \epsilon) - f(x, y - \epsilon)}{2\epsilon}
+\end{equation}
+
+to determine the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$
+in $\mathbb{R}^2$.  For our example, $(x_1, y_1) = (-1, 16)$ and $(x_2, y_2) =
+(3, 1)$, so plugging these values into the distance formula tell us the distance between the two points is
+$$
+	d 
+	= \sqrt{(3 - (-1))^2 + (1 - 16)^2}
+	= \sqrt{4^2 + (-15)^2}
+	= \sqrt{241}
+	.
+$$
+
+
+
+\section{Vectors, Norms and Matrices}
+
+
+\subsection{Intercept}
+
+
+To find the $y$-intercept of the line, we start with the point-slope form of
+the line of slope $m$ through the point $(x_0, y_0)$:
+$$
+	y - y_0 = m (x - x_0)
+	.
+$$
+We plug in the point $(x_0, y_0) = (-1, 16)$ and the slope we found
+previously to obtain the equation
+$$
+	y - 16 = - \frac{15}{4} (x + 1)
+	.
+$$
+Solving for $y$, we find the slope-intercept form of the line:
+\begin{align*}
+	y 
+	&= - \frac{15}{4} x - \frac{15}{4} + 16 \\
+	&= - \frac{15}{4} x + \frac{49}{4}
+	.
+\end{align*}
+Therefore, the $y$-intercept is $b = 49/4$, and the equation 
+$y = - \frac{15}{4} x + \frac{49}{4}$ describes the line through the two
+points.
+
+\section{Matrix Calculus}
+
+
+Let us consider the exponential function $y = A e^{k x}$.  For this function
+to pass through both points, we must find constants $A$ and $k$ that satisfy
+both equations $16 = A e^{-k}$ and $1 = A e^{3 k}$.  To solve these two
+simultaneous equations, we first take the ratio of the two equations, which
+gives us a single equation involving only $k$:
+$$
+	16
+	= \frac{A e^{-k}}{A e^{3 k}}
+	= e^{-4 k}
+	.
+$$
+We can take the natural logarithm of this equation to solve for $k$:
+$$
+	-4k = \ln(16) = 4 \ln (2)
+	,
+$$
+which means $k = - \ln(2)$.
+
+We can then use this value of $k$, along with either of the two points to
+solve for $A$.  Let us consider the point $(-1, 16)$:
+$$
+	16 = A e^{(-\ln(2))(-1)} = A e^{\ln{2}} = 2 A
+	.
+$$
+Solving for $A$, we find $A = 8$, and the exponential equation through both
+points is
+$$
+	y
+	= 8 e^{-\ln(2) x}
+	= 8 2^{-x}
+	= 8 \left( \frac{1}{2} \right)^x
+	.
+$$
+
+\section{Student Task Selection Problem}
+
+
+\end{document}
+
