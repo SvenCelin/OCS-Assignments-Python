@@ -54,6 +54,144 @@ def dF4x(x, y):
 def dF4y(x, y):
     return 6*y/(2 + x**2 + 3*(y**2))
 
+#START OF TASK 5
+
+def objective(x):
+    return (
+    0.5*x[0]  + 0.75*x[1] + 
+    0.25*x[2] + 1.0*x[3] + 
+    0.25*x[4] + 0.75*x[5] + 
+    0.25*x[6] + 0.5*x[7] + 
+    1.0*x[8]  + 0.5*x[9] + 
+    1.0*x[10] + 0.25*x[11] + 
+    0.5*x[12] + 0.25*x[13] + 
+    0.5*x[14] + 0.25*x[15] + 
+    1.0*x[16] + 2.0*x[17] + 
+    0.5*x[18] + 1.25*x[19] + 
+    1.5*x[20] + 1.0*x[21] + 
+    2.5*x[22] + 4.0*x[23] + 
+    1.0*x[24] + 2.5*x[25] + 
+    2.5*x[26] + 3.0*x[27] + 
+    3.5*x[28] + 2.0*x[29]
+    )
+
+def constraint1(x):
+    return (
+    0.5*x[0]  + 
+    0.25*x[2] + 
+    0.25*x[4] + 
+    0.25*x[6] + 
+    1.0*x[8]  + 
+    1.0*x[10] + 
+    0.5*x[12] + 
+    0.5*x[14] + 
+    1.0*x[16] + 
+    0.5*x[18] + 
+    1.5*x[20] + 
+    2.5*x[22] + 
+    1.0*x[24] + 
+    2.5*x[26] + 
+    3.5*x[28] -
+    9
+    )
+
+def constraint2(x):
+    return (
+    0.75*x[1] + 
+    1.0*x[3] + 
+    0.75*x[5] + 
+    0.5*x[7] + 
+    0.5*x[9] + 
+    0.25*x[11] + 
+    0.25*x[13] + 
+    0.25*x[15] + 
+    2.0*x[17] + 
+    1.25*x[19] + 
+    1.0*x[21] + 
+    4.0*x[23] + 
+    2.5*x[25] + 
+    3.0*x[27] + 
+    2.0*x[29] -
+    6
+    )
+
+def constraintX1(x):
+    return abs(x[0] - x[1]) - 1
+    
+def constraintX2(x):
+    return abs(x[2] - x[3]) - 1
+    
+def constraintX3(x):
+    return abs(x[4] - x[5]) - 1
+    
+def constraintX4(x):
+    return abs(x[6] - x[7]) - 1
+    
+def constraintX5(x):
+    return abs(x[8] - x[9]) - 1
+
+def constraintX6(x):
+    return abs(x[10] - x[11]) - 1
+    
+def constraintX7(x):
+    return abs(x[12] - x[13]) - 1
+    
+def constraintX8(x):
+    return abs(x[14] - x[15]) - 1
+    
+def constraintX9(x):
+    return abs(x[16] - x[17]) - 1
+    
+def constraintX10(x):
+    return abs(x[18] - x[19]) - 1
+
+def constraintX11(x):
+    return abs(x[20] - x[21]) - 1
+    
+def constraintX12(x):
+    return abs(x[22] - x[23]) - 1
+    
+def constraintX13(x):
+    return abs(x[24] - x[25]) - 1
+    
+def constraintX14(x):
+    return abs(x[26] - x[27]) - 1
+    
+def constraintX15(x):
+    return abs(x[28] - x[29]) - 1
+
+b = (0.0, 1.0)
+bnds = (b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b)
+
+con1 = {'type': 'ineq', 'fun': constraint1}
+con2 = {'type': 'ineq', 'fun': constraint2}
+conx1 = {'type': 'eq', 'fun': constraintX1}
+conx2 = {'type': 'eq', 'fun': constraintX2}
+conx3 = {'type': 'eq', 'fun': constraintX3}
+conx4 = {'type': 'eq', 'fun': constraintX4}
+conx5 = {'type': 'eq', 'fun': constraintX5}
+conx6 = {'type': 'eq', 'fun': constraintX6}
+conx7 = {'type': 'eq', 'fun': constraintX7}
+conx8 = {'type': 'eq', 'fun': constraintX8}
+conx9 = {'type': 'eq', 'fun': constraintX9}
+conx10 = {'type': 'eq', 'fun': constraintX10}
+conx11 = {'type': 'eq', 'fun': constraintX11}
+conx12 = {'type': 'eq', 'fun': constraintX12}
+conx13 = {'type': 'eq', 'fun': constraintX13}
+conx14 = {'type': 'eq', 'fun': constraintX14}
+conx15 = {'type': 'eq', 'fun': constraintX15}
+
+cons = [con1, con2, conx1, conx2, conx3, conx4, conx5, conx6, conx7, conx8, conx9, conx10, conx11, conx12, conx13, conx14, conx15]
+
+x0 = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+sol = minimize(objective, x0, method='SLSQP', \
+    bounds = bnds, constraints = cons)
+
+print(sol)
+
+#END OF 5. TASK
+
 x = np.linspace(-5, 5, 100)
 y = np.linspace(-5, 5, 100)
 
