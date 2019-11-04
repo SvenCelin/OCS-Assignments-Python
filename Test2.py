@@ -9,7 +9,7 @@ from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization!
 
 #1
 def f(x, y):
-    return (2*x**3. - 6*y**2. + 3*y*x**2.)
+    return (2*(x**3) - 6*(y**2) + 3*y*(x**2))
 
 #2
 def f2(x,y):
@@ -17,11 +17,11 @@ def f2(x,y):
 
 #3
 def f3(x,y):
-    return (2*x**2. + 3*y**2. - 2*x*y + 2*x - 3*y)
+    return (2*(x**2) + 3*(y**2) - 2*x*y + 2*x - 3*y)
 
 #4
 def f4(x,y):
-    return (ln(1 + 0.5*(x**2. + 3*y**2.)))
+    return (ln(1 + 0.5*(x**2. + 3*(y**2))))
 
 def determinantX(func, x, y):
     return (func(x + 0.001, y) - func(x - 0.001, y))/0.002
@@ -29,9 +29,52 @@ def determinantX(func, x, y):
 def determinantY(func, x, y):
     return (func(x, y + 0.001) - func(x, y - 0.001))/0.002
 
+
+def dFx(x, y):
+    return 6*x**2 + 6*x*y
+
+def dFy(x, y):
+    return -12*y + 3*(x**2)
+
+def dF2x(x, y):
+    return 4*((x-2*y)**3) + 64*y
+
+def dF2y(x, y):
+    return -8*((x-2*y)**3) + 64*x
+
+def dF3x(x, y):
+    return 4*x-2*y+2
+
+def dF3y(x, y):
+    return 6*y-2*x-3
+
+def dF4x(x, y):
+    return 2*x/(2 + x**2 + 3*(y**2))
+
+def dF4y(x, y):
+    return 6*y/(2 + x**2 + 3*(y**2))
+
 x = np.linspace(-5, 5, 100)
 y = np.linspace(-5, 5, 100)
 
+x = np.random.rand(1)
+y = np.random.rand(1)
+
+print("x = ")
+print(x)
+print("y = ")
+print(y)
+print("determinantX = ")
+print(determinantX(f, x, y))
+print("determinantY = ")
+print(determinantY(f, x, y))
+print("dFx = ")
+print(dFx(x, y))
+print("dFy = ")
+print(dFy(x, y))
+
+x = np.linspace(-5, 5, 100)
+y = np.linspace(-5, 5, 100)
 X, Y = np.meshgrid(x, y)
 Z = f(X, Y)
 #Z = f2(X, Y)
@@ -49,15 +92,15 @@ ax.set_title('3D contour')
 plt.show()  #***REMOVE COMMENT***
 
 #gradient of f1
-print("New Print")
-gradF = np.gradient(f(x,y), x)
+#print("New Print")
+#gradF = np.gradient(f(x,y), x)
 
 #print (f(x,y))
-print (gradF)
+#print (gradF)
 
 
-print("New Print")
-gradF = np.gradient(f(x,y))
+#print("New Print")
+#gradF = np.gradient(f(x,y))
 
 #print (f(x,y))
-print (gradF)
+#print (gradF)
