@@ -11,5 +11,10 @@ https://math.stackexchange.com/questions/1011563/norm-with-symmetric-positive-de
 Zadatak 3 3)
 https://math.stackexchange.com/questions/730421/is-aat-a-positive-definite-symmetric-matrix
 
+Zadatak 3 4)
+https://stats.stackexchange.com/questions/322207/how-to-show-this-matrix-is-positive-semidefinite
+https://statisticaloddsandends.wordpress.com/2018/01/31/xtx-is-always-positive-semidefinite/
+
+
 Zadatak 5 1)
 https://people.richland.edu/james/ictcm/2006/simplex.html
