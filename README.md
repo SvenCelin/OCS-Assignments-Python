@@ -21,6 +21,9 @@ https://math.stackexchange.com/questions/3055456/show-that-1-2-is-not-a-norm
 https://math.stackexchange.com/questions/1918657/lp-not-norm-p1
 https://www-users.math.umn.edu/~garrett/m/fun/ell_p_not_convex.pdf
 
+Zadatak 3 2)
+https://math.stackexchange.com/questions/708431/proving-the-inequality-a-b-leq-a-c-c-b-for-real-a-b-c
+https://www.cse.iitk.ac.in/users/rmittal/prev_course/s14/notes/lec11.pdf
 
 
 Zadatak 5 1)
