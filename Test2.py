@@ -23,20 +23,37 @@ def f3(x,y):
 def f4(x,y):
     return (ln(1 + 0.5*(x**2. + 3*y**2.)))
 
-x = np.linspace(-1, 1, 100)
-y = np.linspace(-1, 1, 100)
+x = np.linspace(-0.1, 0.1, 100)
+y = np.linspace(-0.1, 0.1, 100)
+
+
+
+
 
 X, Y = np.meshgrid(x, y)
 Z = f(X, Y)
+#Z2 = f2(X, Y)
+#Z3 = f3(X, Y)
+#Z4 = f4(X, Y)
+
+plt.contour(X, Y, Z, colors='black')
+#plt.contour(X, Y, Z2, colors='black')
+#plt.contour(X, Y, Z3, colors='black')
+#plt.contour(X, Y, Z4, colors='black')
+
+
+"""
 fig = plt.figure()
-ax = plt.axes(projection='3d')
-ax.contour3D(X, Y, Z, 50, cmap='binary')
+ax = plt.axes(projection='2d')
+ax.contourf(X, Y, Z, 50, cmap='binary')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')
 ax.set_title('3D contour')
+"""
+plt.savefig("Prva.png")
+plt.show()
 
-#plt.show()  ***REMOVE COMMENT***
 
 #gradient of f1
 gradF = np.gradient(f(x,y))
