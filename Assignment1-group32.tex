@@ -71,7 +71,7 @@ y_2&=4
 \end{aligned}
 $$
 \begin{gather}
-Hessian = 
+\nabla^2 f(x,y) = 
   \begin{bmatrix}
   12 X + 6Y &
    6X\\
@@ -84,7 +84,7 @@ Hessian =
 
 $$
 \begin{aligned}
-det(Hessian)=&-12*(12x+6y) - 36x^2= -144x-72y-36x^2\\
+\det\left(\nabla^2 f(x,y)\right)=&-12*(12x+6y) - 36x^2= -144x-72y-36x^2\\
 1)\: &x_1=0, y_1=0\\
 &det=0 \\ %% ??????????????????????????????????????????????????????????????????????????????
 2)\: &x_2=-4, y_2=4\\
@@ -152,7 +152,7 @@ y(2y-1)(2y+1)&=0\\
 $$
 
 \begin{gather}
-Hessian = 
+\nabla^2 f(x,y) = 
   \begin{bmatrix}
   12 (X - 2Y)^2 &
   -24 (X - 2Y)^2 + 64\\
@@ -165,13 +165,13 @@ Hessian =
 
 $$
 \begin{aligned}
-det&(Hessian)=-12*48(x-2y)^4 -(64-24(x-2y)^2)^2\\
+\det&\left(\nabla^2 f(x,y)\right)=-12*48(x-2y)^4 -(64-24(x-2y)^2)^2\\
 1)\: x_1&=0, \quad y_1=0\\
-det&=12*48(0-0) - (64-24(0-0)^2)^2 =64^2 < 0   \quad\implies \text{Saddle point}\\
+\det&=12*48(0-0) - (64-24(0-0)^2)^2 =64^2 < 0   \quad\implies \text{Saddle point}\\
 2)\: x_2&=-1, \quad y_2=\frac{1}{2}\\
-det&=12*48(-1-1)^4 -(46-24(-1-1)^2)^2=(576*(-16)-32^2)<0 \quad\implies \text{Saddle point}\\
+\det&=12*48(-1-1)^4 -(46-24(-1-1)^2)^2=(576*(-16)-32^2)<0 \quad\implies \text{Saddle point}\\
 3)\: x_3&=1, \quad y_3=-\frac{1}{2}\\
-det&=12*48*2^4 -(64 -24*2^2)^2 = 576*16-32^2>0 \quad \&\& \quad \frac {\partial^2 f}{\partial x^2} > 0 \quad\implies \text{Minimum}\\
+\det&=12*48*2^4 -(64 -24*2^2)^2 = 576*16-32^2>0 \quad \&\& \quad \frac {\partial^2 f}{\partial x^2} > 0 \quad\implies \text{Minimum}\\
 \end{aligned}
 $$
  \pagebreak
@@ -217,7 +217,7 @@ $$
 $$
 
 \begin{gather}
-Hessian = 
+\nabla^2 f(x,y) = 
   \begin{bmatrix}
    4 &
    -2\\
@@ -228,7 +228,7 @@ Hessian =
 \end{gather}
 
 $$
-det(Hessian) = 4*6-(-2)^2=24-4=20 >0  \quad \&\& \quad 4 > 0 \quad\implies \text{Minimum}\\ % ???????????????
+\det\left(\nabla^2 f(x,y)\right) = 4*6-(-2)^2=24-4=20 >0  \quad \&\& \quad 4 > 0 \quad\implies \text{Minimum}\\ % ???????????????
 $$\\
 
 
@@ -279,7 +279,7 @@ $$
 \frac{6y}{2+x^2+3y^2}=0 \quad\Rightarrow y=0\\
 $$
 \begin{gather}
-Hessian = 
+\nabla^2 f(x,y) = 
   \begin{bmatrix}
    \dfrac{4 - 2X^2 +6Y^2}{(2 + X^2 + 3Y^2)^2} &
    \dfrac{-12XY}{(2 + X^2 + 3Y^2)^2}\\
@@ -290,7 +290,7 @@ Hessian =
 \end{gather}
 
 $$
-det(Hessian)=\frac{4-2x^2+6y^2}{(2+x^2+3y^2)^2} * \frac{12+6x^2-18y^2}{(2+x^2+3y^2)^2} - \frac{-12xy}{(2+x^2+3y^2)^2} *  \frac{-12xy}{(2+x^2+3y^2)^2}
+\det\left(\nabla^2 f(x,y)\right)=\frac{4-2x^2+6y^2}{(2+x^2+3y^2)^2} * \frac{12+6x^2-18y^2}{(2+x^2+3y^2)^2} - \frac{-12xy}{(2+x^2+3y^2)^2} *  \frac{-12xy}{(2+x^2+3y^2)^2}
 $$
 $$
 1) x=0, \quad y=0 \quad\Rightarrow det=\frac{4}{4}*\frac{12}{4}-\frac{0}{4}*\frac{0}{4} > 0  \quad \&\& \quad \frac{4}{4} > 0 \quad\implies \text{Minimum}
@@ -327,26 +327,26 @@ $$
 \section{Matrix Calculus}
 
 \begin{equation}
-	f(x) = \dfrac{1}{2}||Ax - b||^2 \quad\text{for}\; x\in \mathbb{R} ^n ,b\in \mathbb{R}^m \;\text{and}\; A\in\mathbb{R}^{m*n}
+	f(x) = \dfrac{1}{2}\Vert Ax - b\Vert^2 \quad\text{for}\; x\in \mathbb{R} ^n ,b\in \mathbb{R}^m \;\text{and}\; A\in\mathbb{R}^{m*n}
 \end{equation}
 
 
 Derivation Summation form:
 $$
 \begin{aligned}
-f(x) = \dfrac{1}{2}||
+f(x) = \dfrac{1}{2}\left\Vert
   \begin{bmatrix}
  \sum_{j=0}^{n}a_{0j}x_j - b_0\\
 ...\\
   \sum_{j=0}^{n}a_{mj}x_j - b_m
    \end{bmatrix}
-||^2\\
-f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)^2\\
+\right\Vert^2\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}\left(\sum_{j=0}^{n}a_{ij}x_j - b_i\right)^2\\
 \frac {\partial f(x)}{\partial x_k} = \sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)a_{ik}
 \end{aligned}
 $$
 $$
-	\frac {\partial f(x)}{\partial x}  = A^t(Ax - b)
+	\frac {\partial f(x)}{\partial x}  = A^\top(Ax - b)
 $$\\
 \pagebreak
 \begin{equation}
@@ -356,19 +356,19 @@ $$\\
 Derivation Summation form:
 $$
 \begin{aligned}
-f(x) = \dfrac{1}{2}||
+f(x) = \dfrac{1}{2}\left\Vert
   \begin{bmatrix}
  \sum_{j=0}^{n}a_{0j}(x_j + \alpha y_j) - b_0\\
 ...\\
   \sum_{j=0}^{n}a_{mj}(x_j + \alpha y_j) - b_m
    \end{bmatrix}
-||^2\\
-f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}(x_j + \alpha y_j) - b_i)^2\\
-\frac {\partial f(\alpha)}{\partial \alpha} = \sum_{i=0}^{m}[ ( \sum_{j=0}^{n}(a_{ij}x_j +a_{ij}y_j\alpha) - b_i)(\sum_{j=0}^{n}a_{ij}y_j]
+\right\Vert^2\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}\left(\sum_{j=0}^{n}a_{ij}(x_j + \alpha y_j) - b_i\right)^2\\
+\frac {\partial f(\alpha)}{\partial \alpha} = \sum_{i=0}^{m}\left[ \left( \sum_{j=0}^{n}(a_{ij}x_j +a_{ij}y_j\alpha) - b_i\right)\sum_{j=0}^{n}a_{ij}y_j\right]
 \end{aligned}
 $$
 $$
-	\frac {\partial f(\alpha)}{\partial \alpha} = y^tA^t(A(x +\alpha y) - b)
+	\frac {\partial f(\alpha)}{\partial \alpha} = y^\top A^\top(A(x +\alpha y) - b)
 $$\\
 
 %%$$
