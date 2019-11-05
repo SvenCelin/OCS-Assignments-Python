@@ -8,6 +8,7 @@
 \usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
 \usepackage[utf8]{inputenc}
 \usepackage{chngcntr}
+\usepackage{graphicx}
 \counterwithin*{equation}{section}
 
 %% Title Information.
@@ -29,13 +30,14 @@
 	f(x,y) = 2x^3 - 6y^2 + 3x^2 y
 \end{equation}
 
-INSERT PLOT
+\includegraphics[width=0.5\textwidth]{Figure_1}
+\includegraphics[width=0.5\textwidth]{Surface_1}
 
 $$
 \frac {\partial f}{\partial x} = 6x^2 + 6xy \quad\Rightarrow 
 	\left\{
 	\begin{aligned}
-		\frac {\partial^2 f}{\partial x^2}&=12x+6y\\ %% zar nije ovdje \partial f^2
+		\frac {\partial^2 f}{\partial x^2}&=12x+6y\\ 
 		\frac {\partial^2 f}{\partial y \partial x}&=6x
 	 \end{aligned} 
 	 \right.
@@ -79,7 +81,6 @@ Hessian =
     \nonumber %%no numerating the eq
 \end{gather}
 
-%%//Stationary points: X = -4, Y = 0
 
 $$
 \begin{aligned}
@@ -96,7 +97,8 @@ $$\\
 	f(x,y) = (x - 2y)^4 + 64xy
 \end{equation}
 
-INSERT PLOT
+\includegraphics[width=0.5\textwidth]{Figure_2}
+\includegraphics[width=0.5\textwidth]{Surface_2}
 
 $$
 \frac {\partial f}{\partial x} = 4(x-2y)^3 + 64y \quad\Rightarrow 
@@ -116,7 +118,7 @@ $$
 		\frac {\partial^2 f}{\partial x \partial y}&=-24(x-2)^2 +64
 	 \end{aligned} 
 	 \right.
-$$
+$$\\
 
 Stationary points:
 
@@ -160,7 +162,6 @@ Hessian =
     \nonumber
 \end{gather}
 
-%%//Stationary points: X = -2Y, Y = 0 ovo se ne poklapa!?
 
 $$
 \begin{aligned}
@@ -172,14 +173,16 @@ det&=12*48(-1-1)^4 -(46-24(-1-1)^2)^2=(576*(-16)-32^2)<0 \quad\implies \text{Sad
 3)\: x_3&=1, \quad y_3=-\frac{1}{2}\\
 det&=12*48*2^4 -(64 -24*2^2)^2 = 576*16-32^2>0 \quad \&\& \quad \frac {\partial^2 f}{\partial x^2} > 0 \quad\implies \text{Minimum}\\
 \end{aligned}
-$$\\
+$$
+ \pagebreak
 
 %% 3
 \begin{equation}
 	f(x,y) = 2x^2 +3y^2 - 2xy + 2x - 3y
 \end{equation}
 
-INSERT PLOT
+\includegraphics[width=0.5\textwidth]{Figure_3}
+\includegraphics[width=0.5\textwidth]{Surface_3}
 
 $$
 \frac {\partial f}{\partial x} = 4x-2y+2 \quad\Rightarrow 
@@ -234,7 +237,8 @@ $$\\
 	f(x,y) = \ln(1 + \dfrac{1}{2}(x^2 +3y^2))
 \end{equation}
 
-INSERT PLOT
+\includegraphics[width=0.5\textwidth]{Figure_4}
+\includegraphics[width=0.5\textwidth]{Surface_4}
 
 $$
 \begin{aligned}
