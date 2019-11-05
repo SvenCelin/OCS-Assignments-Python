@@ -1,6 +1,8 @@
 import numpy as np
 from numpy import log as ln
 import matplotlib.pyplot as plt
+from matplotlib import cm
+from scipy.optimize import minimize
 import scipy as sp
 from scipy.optimize import linprog
 from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization! 

@@ -1,9 +1,10 @@
-\documentclass[9pt]{article}         %% What type of document you're writing.
+\documentclass[12pt]{article}         %% What type of document you're writing.
+
 
 %%%%% Preamble
 
 %% Packages to use
-
+\usepackage[margin=1.1in]{geometry}
 \usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
 \usepackage[utf8]{inputenc}
 \usepackage{chngcntr}
@@ -23,12 +24,50 @@
 
 
 \section{Characterization of Functions}
-
+%% 1
 \begin{equation}
 	f(x,y) = 2x^3 - 6y^2 + 3x^2 y
 \end{equation}
 
 INSERT PLOT
+
+$$
+\frac {\partial f}{\partial x} = 6x^2 + 6xy \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=12x+6y\\ %% zar nije ovdje \partial f^2
+		\frac {\partial^2 f}{\partial y \partial x}&=6x
+	 \end{aligned} 
+	 \right.
+$$
+
+$$
+\frac {\partial f}{\partial y} = -12y+3x^2 \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial y^2}&=-12\\ 
+		\frac {\partial^2 f}{\partial x \partial y}&=6x
+	 \end{aligned} 
+	 \right.
+$$
+
+Stationary points:
+
+$$
+6x^2+6xy=0 \quad\Rightarrow x^2+xy=0 \quad\Rightarrow x(x+y)=0 %% clarification
+$$
+$$
+3x^2-12y=0 \quad\Rightarrow x^2-4y=0
+$$
+$$
+\begin{aligned}
+-xy-4y&=0\\
+y(x+4)&=0\\
+x_1&=0, \quad y_2=0\\
+x_2&=-4 \quad\Rightarrow 16-4y=0\\
+y_2&=4
+\end{aligned}
+$$
 \begin{gather}
 Hessian = 
   \begin{bmatrix}
@@ -40,13 +79,76 @@ Hessian =
     \nonumber %%no numerating the eq
 \end{gather}
 
-//Stationary points: X = -4, Y = 0
+%%//Stationary points: X = -4, Y = 0
 
+$$
+\begin{aligned}
+det(Hessian)=&-12*(12x+6y) - 36x^2= -144x-72y-36x^2\\
+1)\: &x_1=0, y_1=0\\
+&det=0 \\ %% ??????????????????????????????????????????????????????????????????????????????
+2)\: &x_2=-4, y_2=4\\
+&det=576-288-576=-288 \quad\implies \text{Saddle point}
+\end{aligned}
+$$\\
+
+%% 2
 \begin{equation}
 	f(x,y) = (x - 2y)^4 + 64xy
 \end{equation}
 
 INSERT PLOT
+
+$$
+\frac {\partial f}{\partial x} = 4(x-2y)^3 + 64y \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=12(x-2y)\\
+		\frac {\partial^2 f}{\partial y \partial x}&=-24(x-2y)^2 +64
+	 \end{aligned} 
+	 \right.
+$$
+
+$$
+\frac {\partial f}{\partial y} = -8(x-2y)^3 +64x \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial y^2}&=-48(x-2y)^2\\ 
+		\frac {\partial^2 f}{\partial x \partial y}&=-24(x-2)^2 +64
+	 \end{aligned} 
+	 \right.
+$$
+
+Stationary points:
+
+$$
+4(x-2y)^3 +64y=0  \quad\Rightarrow 
+(x-2y)^3 + 16y=0
+$$
+$$
+-8(x-2y)^3+64x=0  \quad\Rightarrow
+(x-2y)^3 -8x=0
+$$
+
+$$
+\begin{aligned}
+8x+16y&=0\\
+x+2y&=0\\
+x&=-2y
+\end{aligned}
+$$
+$$
+\begin{aligned}
+(-2y -2y)^3 +16y&=0\\
+-64y^3 +16y&=0\\
+4y^3 -y&=0\\
+y(4y^2 -1)&=0\\
+y(2y-1)(2y+1)&=0\\
+1)\: x_1=&\:0,\quad y_1=0\\
+2)\: x_2=&\: -\!1,\quad y_2=\frac{1}{2}\\ 
+3)\: x_3=&\:1,\quad y_3=-\frac{1}{2}
+\end{aligned}
+$$
+
 \begin{gather}
 Hessian = 
   \begin{bmatrix}
@@ -58,13 +160,59 @@ Hessian =
     \nonumber
 \end{gather}
 
-//Stationary points: X = -2Y, Y = 0
+%%//Stationary points: X = -2Y, Y = 0 ovo se ne poklapa!?
 
+$$
+\begin{aligned}
+det&(Hessian)=-12*48(x-2y)^4 -(64-24(x-2y)^2)^2\\
+1)\: x_1&=0, \quad y_1=0\\
+det&=12*48(0-0) - (64-24(0-0)^2)^2 =64^2 < 0   \quad\implies \text{Saddle point}\\
+2)\: x_2&=-1, \quad y_2=\frac{1}{2}\\
+det&=12*48(-1-1)^4 -(46-24(-1-1)^2)^2=(576*(-16)-32^2)<0 \quad\implies \text{Saddle point}\\
+3)\: x_3&=1, \quad y_3=-\frac{1}{2}\\
+det&=12*48*2^4 -(64 -24*2^2)^2 = 576*16-32^2>0 \quad \&\& \quad \frac {\partial^2 f}{\partial x^2} > 0 \quad\implies \text{Minimum}\\
+\end{aligned}
+$$\\
+
+%% 3
 \begin{equation}
 	f(x,y) = 2x^2 +3y^2 - 2xy + 2x - 3y
 \end{equation}
 
 INSERT PLOT
+
+$$
+\frac {\partial f}{\partial x} = 4x-2y+2 \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=4\\
+		\frac {\partial^2 f}{\partial y \partial x}&=-2
+	 \end{aligned} 
+	 \right.
+$$
+$$
+\frac {\partial f}{\partial x} = 6y-2x-3 \quad\Rightarrow 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=6\\
+		\frac {\partial^2 f}{\partial y \partial x}&=-2
+	 \end{aligned} 
+	 \right.
+$$
+
+Stationary points:
+
+$$
+\begin{aligned}
+4x-2y+2&=0 \quad\Rightarrow 2x-y+1=0 \quad\Rightarrow y=2x+1\\
+6y-2x-3&=0\\
+&6(2x+1) -2x-3=0\\
+&10x-3=0\\
+&x=\frac{-3}{10}\\
+&y=2\frac{-3}{10} +1 = \frac{2}{5}
+\end{aligned}
+$$
+
 \begin{gather}
 Hessian = 
   \begin{bmatrix}
@@ -76,25 +224,73 @@ Hessian =
    \nonumber
 \end{gather}
 
-//Stationary points: X = -4, Y = 0
+$$
+det(Hessian) = 4*6-(-2)^2=24-4=20 >0  \quad \&\& \quad 4 > 0 \quad\implies \text{Minimum}\\ % ???????????????
+$$\\
 
+
+%% 4
 \begin{equation}
 	f(x,y) = \ln(1 + \dfrac{1}{2}(x^2 +3y^2))
 \end{equation}
 
 INSERT PLOT
+
+$$
+\begin{aligned}
+\frac {\partial f}{\partial x} = \frac{1}{1+\frac{1}{2}(x^2+3y^2)}x= \frac{x}{\frac{1}{2}(2+x^2+3y^2)}=\frac{2x}{2+x^2+3y^2}\\
+\implies 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=\frac{2(2+x^2+3y^2)-2x(2x)}{(2+x^2+3y^2)^2}=
+		 	\frac{4-2x^2+6y^2}{(2+x^2+3y^2)^2} \\
+		\frac {\partial^2 f}{\partial y \partial x}&=\frac{0(2+x^2+3y^2)-2x(6y)}{(2+x^2+3y^2)^2}=
+		 	\frac{-12xy}{(2+x^2+3y^2)^2} 
+	 \end{aligned} 
+	 \right.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\frac {\partial f}{\partial x} = \frac{1}{1+\frac{1}{2}(x^2+3y^2)}3y= \frac{3y}{\frac{1}{2}(2+x^2+3y^2)}=\frac{6y}{2+x^2+3y^2}\\
+\implies 
+	\left\{
+	\begin{aligned}
+		\frac {\partial^2 f}{\partial x^2}&=\frac{6(2+x^2+3y^2)-6y(6y)}{(2+x^2+3y^2)^2}=
+		 	\frac{12+6x^2-18y^2}{(2+x^2+3y^2)^2} \\
+		\frac {\partial^2 f}{\partial y \partial x}&=\frac{0(2+x^2+3y^2)-6y(2x)}{(2+x^2+3y^2)^2}=
+		 	\frac{-12xy}{(2+x^2+3y^2)^2} 
+	 \end{aligned} 
+	 \right.
+\end{aligned}
+$$
+
+Stationary points:
+
+$$
+\frac{2x}{2+x^2+3y^2}=0 \quad\Rightarrow x=0\\
+$$
+$$
+\frac{6y}{2+x^2+3y^2}=0 \quad\Rightarrow y=0\\
+$$
 \begin{gather}
 Hessian = 
   \begin{bmatrix}
-   \frac{4 - 2X^2 +6Y^2}{(2 + X^2 + 3Y^2)^2} &
-   \frac{-12XY}{(2 + X^2 + 3Y^2)^2}\\
-   \frac{-12XY}{(2 + X^2 + 3Y^2)^2} &
-   \frac{12 + 6X^2 - 18Y^2}{(2 + X^2 + 3Y^2)^2} 
+   \dfrac{4 - 2X^2 +6Y^2}{(2 + X^2 + 3Y^2)^2} &
+   \dfrac{-12XY}{(2 + X^2 + 3Y^2)^2}\\
+   \dfrac{-12XY}{(2 + X^2 + 3Y^2)^2} &
+   \dfrac{12 + 6X^2 - 18Y^2}{(2 + X^2 + 3Y^2)^2} 
    \end{bmatrix}
     \nonumber
 \end{gather}
 
-//Stationary points: X = -4, Y = 0
+$$
+det(Hessian)=\frac{4-2x^2+6y^2}{(2+x^2+3y^2)^2} * \frac{12+6x^2-18y^2}{(2+x^2+3y^2)^2} - \frac{-12xy}{(2+x^2+3y^2)^2} *  \frac{-12xy}{(2+x^2+3y^2)^2}
+$$
+$$
+1) x=0, \quad y=0 \quad\Rightarrow det=\frac{4}{4}*\frac{12}{4}-\frac{0}{4}*\frac{0}{4} > 0  \quad \&\& \quad \frac{4}{4} > 0 \quad\implies \text{Minimum}
+$$
 
 %Consider the two points $(-1,16)$ and $(3,1)$.  quation $y = m x + b$ through the two points, and
 %Section fits a exponential equation $y = A e^{k x}$
@@ -112,84 +308,27 @@ Hessian =
 	\nabla_x f(x,y) \approx \dfrac{f(x, y + \epsilon) - f(x, y - \epsilon)}{2\epsilon}
 \end{equation}
 
-to determine the distance between any two points $(x_1, y_1)$ and $(x_2, y_2)$
-in $\mathbb{R}^2$.  For our example, $(x_1, y_1) = (-1, 16)$ and $(x_2, y_2) =
-(3, 1)$, so plugging these values into the distance formula tell us the distance between the two points is
-$$
-	d 
-	= \sqrt{(3 - (-1))^2 + (1 - 16)^2}
-	= \sqrt{4^2 + (-15)^2}
-	= \sqrt{241}
-	.
-$$
 
 
 
 \section{Vectors, Norms and Matrices}
 
 
-\subsection{Intercept}
+\subsection{aa}
 
 
-To find the $y$-intercept of the line, we start with the point-slope form of
-the line of slope $m$ through the point $(x_0, y_0)$:
-$$
-	y - y_0 = m (x - x_0)
-	.
-$$
-We plug in the point $(x_0, y_0) = (-1, 16)$ and the slope we found
-previously to obtain the equation
-$$
-	y - 16 = - \frac{15}{4} (x + 1)
-	.
-$$
-Solving for $y$, we find the slope-intercept form of the line:
-\begin{align*}
-	y 
-	&= - \frac{15}{4} x - \frac{15}{4} + 16 \\
-	&= - \frac{15}{4} x + \frac{49}{4}
-	.
-\end{align*}
-Therefore, the $y$-intercept is $b = 49/4$, and the equation 
-$y = - \frac{15}{4} x + \frac{49}{4}$ describes the line through the two
-points.
+
+
 
 \section{Matrix Calculus}
 
 
-Let us consider the exponential function $y = A e^{k x}$.  For this function
-to pass through both points, we must find constants $A$ and $k$ that satisfy
-both equations $16 = A e^{-k}$ and $1 = A e^{3 k}$.  To solve these two
-simultaneous equations, we first take the ratio of the two equations, which
-gives us a single equation involving only $k$:
-$$
-	16
-	= \frac{A e^{-k}}{A e^{3 k}}
-	= e^{-4 k}
-	.
-$$
-We can take the natural logarithm of this equation to solve for $k$:
-$$
-	-4k = \ln(16) = 4 \ln (2)
-	,
-$$
-which means $k = - \ln(2)$.
 
-We can then use this value of $k$, along with either of the two points to
-solve for $A$.  Let us consider the point $(-1, 16)$:
-$$
-	16 = A e^{(-\ln(2))(-1)} = A e^{\ln{2}} = 2 A
+%%$$
+	%%16 = A e^{(-\ln(2))(-1)} = A e^{\ln{2}} = 2 A
 	.
-$$
-Solving for $A$, we find $A = 8$, and the exponential equation through both
-points is
-$$
-	y
-	= 8 e^{-\ln(2) x}
-	= 8 2^{-x}
-	= 8 \left( \frac{1}{2} \right)^x
-	.
-$$
+%%$$
+
 
 \section{Student Task Selection Problem}
 
