@@ -326,7 +326,50 @@ $$
 
 \section{Matrix Calculus}
 
+\begin{equation}
+	f(x) = \dfrac{1}{2}||Ax - b||^2
+\end{equation}
 
+
+Derivation Summation form:
+$$
+\begin{aligned}
+f(x) = \dfrac{1}{2}||
+  \begin{bmatrix}
+ \sum_{j=0}^{n}a_{0j}x_j - b_0\\
+...\\
+  \sum_{j=0}^{n}a_{mj}x_j - b_m
+   \end{bmatrix}
+||^2\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)^2\\
+\frac {\partial f(x)}{\partial x_k} = \sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)a_{ik}
+\end{aligned}
+$$
+$$
+	\frac {\partial f(x)}{\partial x}  = A^t(Ax - b)
+$$\\
+\begin{equation}
+	f(\alpha) = \dfrac{1}{2}||A(x - \alpha y) - b||^2
+\end{equation}
+\\
+\\
+Derivation Summation form:
+$$
+\begin{aligned}
+f(x) = \dfrac{1}{2}||
+  \begin{bmatrix}
+ \sum_{j=0}^{n}a_{0j}(x_j + \alpha y_j) - b_0\\
+...\\
+  \sum_{j=0}^{n}a_{mj}(x_j + \alpha y_j) - b_m
+   \end{bmatrix}
+||^2\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}(x_j + \alpha y_j) - b_i)^2\\
+\frac {\partial f(\alpha)}{\partial \alpha} = \sum_{i=0}^{m}[ ( \sum_{j=0}^{n}(a_{ij}x_j +a_{ij}y_j\alpha) - b_i)(\sum_{j=0}^{n}a_{ij}y_j]
+\end{aligned}
+$$
+$$
+	\frac {\partial f(\alpha)}{\partial \alpha} = y^tA^t(A(x +\alpha y) - b)
+$$\\
 
 %%$$
 	%%16 = A e^{(-\ln(2))(-1)} = A e^{\ln{2}} = 2 A
