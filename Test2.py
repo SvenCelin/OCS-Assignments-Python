@@ -202,14 +202,14 @@ print(sol)
 
 c = [0.5 , 0.25, 0.25, 0.25, 1.0, 1.0 , 0.5 , 0.5 , 1.0, 0.5 , 1.5, 2.5, 1.0, 2.5, 3.5, 
      0.75, 1.0 , 0.75, 0.5 , 0.5, 0.25, 0.25, 0.25, 2.0, 1.25, 1.0, 4.0, 2.5, 3.0, 2.0 ]
-
+'''
 a_ub = [
     [0.5 , 0.25, 0.25, 0.25, 1.0, 1.0 , 0.5 , 0.5 , 1.0, 0.5 , 1.5, 2.5, 1.0, 2.5, 3.5, 
      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
      0.75, 1.0 , 0.75, 0.5 , 0.5, 0.25, 0.25, 0.25, 2.0, 1.25, 1.0, 4.0, 2.5, 3.0, 2.0 ]
 ]
-
+'''
 a_ub = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
@@ -305,14 +305,15 @@ Z = f2(X, Y)
 #Z = f3(X, Y)
 #Z = f4(X, Y)
 
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-ax.contour3D(X, Y, Z, 500, cmap='autumn_r')
-#ax.plot_surface(X, Y, Z, rstride = 1, cstride = 1, cmap = cm.coolwarm, edgecolor = 'none')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-ax.set_zlabel('z')
-ax.set_title('3D contour')
+plt.contour(X, Y, Z, 200, cmap='plasma')
+#ax.plot_surface(X, Y, Z, rstride = 1, cstride = 1, cmap = 'plasma', edgecolor = 'none')
+'''
+fig.set_xlabel('x')
+fig.set_ylabel('y')
+'''
+plt.title('Contour plot')
+
+#plt.show()  #***REMOVE COMMENT***
 
 #plt.show()  #***REMOVE COMMENT***
 
