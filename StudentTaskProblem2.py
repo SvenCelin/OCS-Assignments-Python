@@ -1,11 +1,18 @@
 from scipy.optimize import linprog
 
-#coefficients
-#time for each task of both students
+
+#time for each task of both student
 c = [0.5 , 0.25, 0.25, 0.25, 1.0, 1.0 , 0.5 , 0.5 , 1.0, 0.5 , 1.5, 2.5, 1.0, 2.5, 3.5, 
      0.75, 1.0 , 0.75, 0.5 , 0.5, 0.25, 0.25, 0.25, 2.0, 1.25, 1.0, 4.0, 2.5, 3.0, 2.0 ]
+'''
+a_ub = [
+    [0.5 , 0.25, 0.25, 0.25, 1.0, 1.0 , 0.5 , 0.5 , 1.0, 0.5 , 1.5, 2.5, 1.0, 2.5, 3.5, 
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+     0.75, 1.0 , 0.75, 0.5 , 0.5, 0.25, 0.25, 0.25, 2.0, 1.25, 1.0, 4.0, 2.5, 3.0, 2.0 ]
+]
+'''
 
-#The inequality constraint matrix. Each row of A_ub specifies the coefficients of a linear inequality constraint on x
 #constraints for each students time budget
 a_ub = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
@@ -14,10 +21,8 @@ a_ub = [
      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-#upper bound
 b_ub = [9, 6]
 
-#The equality constraint matrix. Each row of A_eq specifies the coefficients of a linear equality constraint on x
 #constraints to make sure each task is done by only 1 student
 a_eq = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -54,9 +59,9 @@ a_eq = [
      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ],
 ]
 
-#x1 + x15 = 1
 b_eq = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
+#bounds
 b = [0, 1]
 bnds = (b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b)
 
@@ -67,11 +72,11 @@ sum1 = 0
 sum2 = 0
 
 for n in range(0, 14):
-    if(sol.x[n]):
+    if(sol.x[n] > 0.5):
         sum1+=c[n]
 
 for n in range(15, 30):
-    if(sol.x[n]):
+    if(sol.x[n] > 0.5):
         sum2+=c[n]
 
 print('Student 1:')
