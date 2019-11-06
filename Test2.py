@@ -210,6 +210,13 @@ a_ub = [
      0.75, 1.0 , 0.75, 0.5 , 0.5, 0.25, 0.25, 0.25, 2.0, 1.25, 1.0, 4.0, 2.5, 3.0, 2.0 ]
 ]
 
+a_ub = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
 b_ub = [9, 6]
 
 a_eq = [
@@ -254,6 +261,20 @@ bnds = (b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, b, 
 
 sol = linprog(c, A_ub= a_ub, b_ub= b_ub, A_eq= a_eq, b_eq= b_eq, bounds=bnds,method='revised simplex')
 print(sol)
+
+sum1 = 0
+sum2 = 0
+
+for n in range(0, 14):
+    if(sol.x[n] > 0.5):
+        sum1+=c[n]
+
+for n in range(15, 30):
+    if(sol.x[n] > 0.5):
+        sum2+=c[n]
+
+print(sum1)
+print(sum2)
 
 x = np.linspace(-5, 5, 100)
 y = np.linspace(-5, 5, 100)
