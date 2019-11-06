@@ -450,6 +450,69 @@ $$\\
 
 \section{Student Task Selection Problem}
 
+Two tudents need to complete an assignment sheet, which consists of $J= 15$ tasks.  Each student has a total time budget which can be assigned to the individual tasks. To account for the different abilities of the students, they estimated for each student the required time for each task in hours as well as their time budget and inserted it into the following table:
+
+\begin{table}[h]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l|l}
+        & \multicolumn{15}{l|}{Task}                                                                       &             \\ \cline{1-16}
+Student & 1    & 2    & 3    & 4    & 5   & 6    & 7     & 8    & 9   & 10   & 11  & 12  & 13  & 14  & 15  & Time budget \\ \hline
+1       & 0.5  & 0.25 & 0.25 & 0.25 & 1.0 & 1.0  & 0.5   & 0.5  & 1.0 & 0.5  & 1.5 & 2.5 & 1.0 & 2.5 & 3.5 & 9           \\ \cline{1-16}
+2       & 0.75 & 1.0  & 0.75 & 0.5  & 0.5 & 0.25 & 0.25 & 0.25 & 2.0 & 1.25 & 1.0 & 4.0 & 2.5 & 3.0 & 2.0 & 6          
+\end{tabular}%
+}
+\end{table}
+
+To figure out the distribution of students to tasks that minimizes the time to complete the whole assignment sheet, first the student task selection problem needs to be cast into a linear program. $x$ values will define whether the first or the second student  $(x_1, x_{15})$ and $(x_{16}, x_{30})$, respectively, does the individual task.
+ 
+ $$
+ \begin{aligned}
+ \min_{(x_1,x_{30})\in[0 .. 1]} &= 0.5x_1 + 0.25x_2 + 0.25x_3 + 0.25x_4 + 1.0x_5 + 1.0x_6+ 0.5x_7 + 0.5x_8\\&+ 1.0x_9 +0.5x_{10}+ 1.5x_{11}+ 2.5x_{12}+ 1.0x_{13}+ 2.5x_{14}+ 3.5x_{15}+
+ 0.75x_{16}\\ &+ 1.0x_{17}+  0.75x_{18}+ 0.5 x_{19}+ 0.5x_{20}+ 0.25x_{21}+ 0.25x_{22}+ 0.25x_{23}\\ &+2.0x_{24}+ 1.25x_{25}+1.0x_{26}+ 4.0x_{27}+ 2.5x_{28}+ 3.0 x_{29}+ 2.0x_{30}
+ \end{aligned}
+$$
+
+s.t.
+
+$$
+ \sum_{i=0}^{15} ( c_i x_i) \le 9 \quad\quad\quad\quad\quad\quad \text{(1)}
+$$
+$$
+\sum_{i=16}^{30} ( c_i x_i) \le 6 \quad\quad\quad\quad\quad\quad \text{(2)}
+$$
+
+where $c_i$ are the coefficients. To convert into the standard form we introduce $s_1$ and $s_2$ which measure how much under $9$ and $6$ the constraint functions are.
+
+$$
+ \sum_{i=0}^{15} ( c_i x_i) + s_1 = 9 \quad\Rightarrow
+ \sum_{i=0}^{15} ( c_i x_i) + s_1 - 9 = 0
+$$
+$$
+ \sum_{i=0}^{15} ( c_i x_i) + s_2 = 6\quad\Rightarrow
+ \sum_{i=0}^{15} ( c_i x_i) + s_2 - 6 = 0
+$$
+$$
+s_1, s_2 \ge 0
+$$
+
+Python scipy.optimize.linprog %% insert reference
+will be used to minimize a linear objective function subject to linear equality and inequality constraints. \\
+Inequality constraints are the eq. (1,2). Equality constraint is $x_i + x_{i+15} = 0$ because any one task can only be done by one student.
+\\ \\
+Solution:
+
+\begin{table}[h]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|lllllllllllllllll}
+        & \multicolumn{15}{l|}{Task}                                                                                                                                                                                                                                                                                                                                                                 &                                  &           \\ \cline{1-16}
+Student & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{2} & \multicolumn{1}{l|}{3} & \multicolumn{1}{l|}{4} & \multicolumn{1}{l|}{5} & \multicolumn{1}{l|}{6} & \multicolumn{1}{l|}{7} & \multicolumn{1}{l|}{8} & \multicolumn{1}{l|}{9} & \multicolumn{1}{l|}{10} & \multicolumn{1}{l|}{11} & \multicolumn{1}{l|}{12} & \multicolumn{1}{l|}{13} & \multicolumn{1}{l|}{14} & \multicolumn{1}{l|}{15} & \multicolumn{1}{c|}{Time budget} & Minimized \\ \hline
+1       & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{9}           & 8.75      \\ \hline
+2       & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{1} & \multicolumn{1}{l|}{0} & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{0}  & \multicolumn{1}{l|}{1}  & \multicolumn{1}{l|}{6}           & 4.25      \\ \hline
+Total   &                        &                        &                        &                        &                        &                        &                        &                        &                        &                         &                         &                         &                         &                         &                         & \multicolumn{1}{l|}{}            & 13       
+\end{tabular}%
+}
+\end{table}
+
 
 \end{document}
 
