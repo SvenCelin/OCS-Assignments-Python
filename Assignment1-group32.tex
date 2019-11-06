@@ -396,44 +396,50 @@ $$
 \end{equation}
 
 
-Derivation Summation form:
 $$
 \begin{aligned}
-f(x) = \dfrac{1}{2}\left\Vert
+\text{We write the equation in vector form:}\\
+f(x) = \dfrac{1}{2}||
   \begin{bmatrix}
  \sum_{j=0}^{n}a_{0j}x_j - b_0\\
 ...\\
   \sum_{j=0}^{n}a_{mj}x_j - b_m
    \end{bmatrix}
-\right\Vert^2\\
-f(x) = \dfrac{1}{2}\sum_{i=0}^{m}\left(\sum_{j=0}^{n}a_{ij}x_j - b_i\right)^2\\
-\frac {\partial f(x)}{\partial x_k} = \sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)a_{ik}
+||^2\\\\
+\text{The square root is cancelled by power of 2}\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)^2\\\\
+\text{we derive the bracket and whats inside the bracket}\\
+\frac {\partial f(x)}{\partial x_k} = \sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}x_j - b_i)a_{ik}\\
 \end{aligned}
 $$
 $$
-	\frac {\partial f(x)}{\partial x}  = A^\top(Ax - b)
+\text{Linear form: }\\
+	\frac {\partial f(x)}{\partial x}  = A^t(Ax - b)
 $$\\
-\pagebreak
 \begin{equation}
-	f(\alpha) = \dfrac{1}{2}||A(x - \alpha y) - b||^2 \quad\text{for}\; \alpha\in \mathbb{R},\; x,y\in\mathbb{R}^n ,b\in \mathbb{R}^m \;\text{and}\; A\in\mathbb{R}^{m*n}
-\end{equation}\\
-
-Derivation Summation form:
+	f(\alpha) = \dfrac{1}{2}||A(x - \alpha y) - b||^2
+\end{equation}
+\\
+\\
 $$
 \begin{aligned}
-f(x) = \dfrac{1}{2}\left\Vert
+\text{We write the equation in vector form:}\\
+f(x) = \dfrac{1}{2}||
   \begin{bmatrix}
  \sum_{j=0}^{n}a_{0j}(x_j + \alpha y_j) - b_0\\
 ...\\
   \sum_{j=0}^{n}a_{mj}(x_j + \alpha y_j) - b_m
    \end{bmatrix}
-\right\Vert^2\\
-f(x) = \dfrac{1}{2}\sum_{i=0}^{m}\left(\sum_{j=0}^{n}a_{ij}(x_j + \alpha y_j) - b_i\right)^2\\
-\frac {\partial f(\alpha)}{\partial \alpha} = \sum_{i=0}^{m}\left[ \left( \sum_{j=0}^{n}(a_{ij}x_j +a_{ij}y_j\alpha) - b_i\right)\sum_{j=0}^{n}a_{ij}y_j\right]
+||^2\\\\
+\text{The square root is cancelled by power of 2}\\
+f(x) = \dfrac{1}{2}\sum_{i=0}^{m}(\sum_{j=0}^{n}a_{ij}(x_j + \alpha y_j) - b_i)^2\\\\
+\text{we derive the bracket and whats inside the bracket}\\
+\frac {\partial f(\alpha)}{\partial \alpha} = \sum_{i=0}^{m}[ ( \sum_{j=0}^{n}(a_{ij}x_j +a_{ij}y_j\alpha) - b_i)(\sum_{j=0}^{n}a_{ij}y_j]\\
 \end{aligned}
 $$
 $$
-	\frac {\partial f(\alpha)}{\partial \alpha} = y^\top A^\top(A(x +\alpha y) - b)
+\text{Linear form: }\\
+	\frac {\partial f(\alpha)}{\partial \alpha} = y^tA^t(A(x +\alpha y) - b)
 $$\\
 
 %%$$
