@@ -360,7 +360,30 @@ $$
 \section{Vectors, Norms and Matrices}
 
 
-\subsection{aa}
+\subsection{}
+$\vert$$\vert$.$\vert$$\vert_{1/2}$ is not a norm because it violates the third rule for norms, triangle inequality, for vectors x=(1,0) and y=(0,1)
+
+$$
+\begin{aligned}
+||x+y||&\leq ||x|| + ||y||\\
+||(1, 0) + (0, 1)||&\leq ||(1, 0)|| + ||(0, 1)||\\
+||(1, 1)||&\leq ||(1, 0)|| + ||(0, 1)||\\
+(\sqrt{1} + \sqrt{1})^2&\leq (\sqrt{1} + \sqrt{0})^2 + (\sqrt{0} + \sqrt{1})^2\\
+2^2 &\leq 1^2 + 1^2\\
+4 &\leq 2\\
+\end{aligned}
+$$
+
+\subsection{}
+To prove this inequality we will use the triangle inequality
+$$
+\begin{aligned}
+||a + b||&\leq ||a|| + ||b||\\
+\text{Replace a and b}\\ a &= x-y\\ b &= y-z\\ \text{then}\\
+||x - y + y - z||&\leq ||x-y|| + ||y-z||\\
+||x - z||&\leq ||x-y|| + ||y-z||\\
+\end{aligned}
+$$
 
 
 
