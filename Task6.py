@@ -42,5 +42,5 @@ def compareError(S, armijoErr, standardErr):
     sum = 0
     for s in S:
         if(armijoErr[s] == standardErr[s]):
-            s+=1
-    return s/S
+            sum+=1
+    return sum/S
