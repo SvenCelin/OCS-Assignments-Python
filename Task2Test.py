@@ -64,13 +64,15 @@ def back_prop(y, W, b, d_act, a, z):
     return dW, db, e
 
     #TRAINING
-def nabla_f(x):
-    nabla = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))
-    return nabla
+#def nabla_f(x):
+#    nabla = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))
+#    return nabla
 
-def func(x):
-    f = lambda x: np.where(np.abs(x) > 1, 3*(1-np.abs(x))**2/4 - 2*(1-np.abs(x)), x**2-1)
-    return f
+nabla_f = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))
+f = lambda x: np.where(np.abs(x) > 1, 3*(1-np.abs(x))**2/4 - 2*(1-np.abs(x)), x**2-1)
+#def func(x):
+#    f = lambda x: np.where(np.abs(x) > 1, 3*(1-np.abs(x))**2/4 - 2*(1-np.abs(x)), x**2-1)
+#    return f
 
 def armijo(K, x_k):
     s = 1.
@@ -80,7 +82,12 @@ def armijo(K, x_k):
         grad = nabla_f(x_k)
         for m_k in range(10):
              t_k = s*beta**m_k
-             if func(x_k) - func(x_k - t_k*grad) >= sigma*t_k*(grad**2).sum():
+             temp = f(x_k) - f(x_k - t_k*grad)
+             temp2 = sigma*t_k*(grad**2).sum()
+
+             #print("temp1 type: ", type(temp))
+             #print("temp2 type: ", type(temp2))
+             if temp.sum() >= sigma*t_k*(grad**2).sum():
                  break
         x_k -= t_k * grad
 
@@ -88,9 +95,12 @@ def armijo(K, x_k):
         #update_plots(k, x_k, t_k)
 
 def steepestDescent(x_k, K, t, d, constantStep):
+    print("x_k shape: ", x_k.shape)
+    print("d shape: ", d.shape)
     for k in range(K):
         x_k += t * d
-        t = armijo(K, x_k)
+        if(constantStep == False):
+            t = armijo(K, x_k)
     return x_k
 
 def compareError(S, armijoErr, standardErr):
@@ -135,29 +145,48 @@ if __name__ == '__main__':
     print("db: ", db)
     print("e: ", e)
 
+    W_array = np.array(W)
+    b_array = np.array(b)
+    print("W type: ", type(W))
+    print("Warray type: ", type(W_array))
+    print("W shape: ", W_array.shape)
+
+    print("W[0]: ", W_array[0])
+
+
     
     WTrainStandard = [None] * len(W)
     bTrainStandard = [None] * len(b)
 
-    for x in W[0]:
-        WTrainStandard[0] = steepestDescent(x, 1000, 0.001, dW[0], True) 
-    for x in W[1]:
-        WTrainStandard[1] = steepestDescent(x, 1000, 0.001, dW[1], True) 
-    for x in b[0]:
-        bTrainStandard[0] = steepestDescent(x, 1000, 0.001, db[0], True) 
-    for x in b[1]:
-        bTrainStandard[1] = steepestDescent(x, 1000, 0.001, db[1], True) 
+    
+    print("x type: ", type(x))
+    print("dW[0] type: ", type(dW[0]))
+    print("dW[1] type: ", type(dW[1]))
+
+    print("x shape: ", x.shape)
+    print("dW[0] shape: ", dW[0].shape)
+    print("dW[1] shape: ", dW[1].shape)
+
+    for x in W_array[0]:
+        WTrainStandard[0] = steepestDescent(W_array[0], 1000, 0.001, dW[0], True) 
+    for x in W_array[1]:
+        WTrainStandard[1] = steepestDescent(W_array[1], 1000, 0.001, dW[1], True) 
+    for x in b_array[0]:
+        bTrainStandard[0] = steepestDescent(b_array[0], 1000, 0.001, db[0], True) 
+    for x in b_array[1]:
+        bTrainStandard[1] = steepestDescent(b_array[1], 1000, 0.001, db[1], True) 
+
 
     WTrainArmijo = [None] * len(W)
     bTrainArmijo = [None] * len(b)
 
-    for x in W[0]:
-        WTrainArmijo[0] = steepestDescent(x, 1000, 0.001, dW[0], False) 
-    for x in W[1]:
-        WTrainArmijo[1] = steepestDescent(x, 1000, 0.001, dW[1], False) 
-    for x in b[0]:
-        bTrainArmijo[0] = steepestDescent(x, 1000, 0.001, db[0], False) 
-    for x in b[1]:
-        bTrainArmijo[1] = steepestDescent(x, 1000, 0.001, db[1], False) 
+    for x in W_array[0]:
+        WTrainStandard[0] = steepestDescent(W_array[0], 1000, 0.001, dW[0], False) 
+    for x in W_array[1]:
+        WTrainStandard[1] = steepestDescent(W_array[1], 1000, 0.001, dW[1], False) 
+    for x in b_array[0]:
+        bTrainStandard[0] = steepestDescent(b_array[0], 1000, 0.001, db[0], False) 
+    for x in b_array[1]:
+        bTrainStandard[1] = steepestDescent(b_array[1], 1000, 0.001, db[1], False) 
     
 
