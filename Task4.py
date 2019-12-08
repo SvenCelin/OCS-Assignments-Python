@@ -21,17 +21,33 @@ def softMax(X):
         sum = 0
         for elem in X:
             sum += np.exp(elem)
-        temp = numer/sum
+        temp = np.exp(numer)/sum
         if(temp > y):
             y = temp
     
+    print("Y of softmax = ", y)
     return y
+    """
+
+    exps = np.exp(X)
+    exps = exps/ np.sum(exps)
+
+    y = 0
+    for x in exps:
+        if(x > y):
+            y = x
+    print("Y of softmax = ", y)
+    return y
+    
+    """
+    
 
 def feed_forward(x, W, b, act):
     # convert to column vector
     x = x[:, np.newaxis]
     a = [x]
     z = [x]
+    print("FEED FORWARD")
     print("x = ", x)
     print("a = ", a)
     print("z = ", z)

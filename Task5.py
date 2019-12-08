@@ -11,11 +11,29 @@ def d_sigmoid(x):
     sig = Task4.sigmoid(x)
     return sig*(1-sig)
 
+def d_lnAct(x):
+    return np.exp(x)/(1+np.exp(x))
+
+def d_softmax(X):
+    sum = np.sum(np.exp(X))
+    
+    h = [None] * len(X)
+    i = 0
+
+    for x in X:
+        res = np.exp(x)*sum + np.exp(x)*np.exp(x)
+        res /= np.square(sum)
+        h[i] = res
+        i+=1
+    return h
+
+
 def d_loss(y, y_tilde):
     return -y/y_tilde + (1-y)/(1-y_tilde)
 
 def back_prop(y, W, b, d_act, a, z):
     # compute errors e in reversed order
+    print("BACK PROPAGATION")
     assert(len(a) == len(z))
     e = [None] * len(a)
     e[-1] = d_act[-1](z[-1]) * d_loss(y, a[-1]) # delta_L

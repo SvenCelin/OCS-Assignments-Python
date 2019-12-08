@@ -2,7 +2,6 @@ import numpy as np
 from scipy.optimize import approx_fprime
 
 import matplotlib.pyplot as plt
-
 dtype = np.float64
 
 nabla_f = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))

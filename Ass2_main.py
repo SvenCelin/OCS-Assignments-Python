@@ -36,7 +36,7 @@ if __name__ == '__main__':
     print("a: ", a)
     print("z: ", z)
 
-    d_act = [Task5.d_sigmoid, Task5.d_sigmoid]
+    d_act = [Task5.d_lnAct, Task5.d_softmax]
     dW, db, e = Task5.back_prop(y[1], W, b, d_act, a, z)
 
     print("d_act: ", d_act)
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     print("db: ", db)
     print("e: ", e)
 
+    """
     W_array = np.array(W)
     b_array = np.array(b)
     print("W type: ", type(W))
@@ -87,5 +88,5 @@ if __name__ == '__main__':
         bTrainArmijo[0] = Task6.steepestDescent(b_array[0], 1000, 0.05, db[0], False) 
     for x in b_array[1]:
         bTrainArmijo[1] = Task6.steepestDescent(b_array[1], 1000, 0.05, db[1], False) 
-    
+    """
 
