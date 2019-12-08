@@ -22,6 +22,7 @@ if __name__ == '__main__':
     print('Training data:', x_train.shape, y_train.shape)
     print('Test data:', x_test.shape, y_test.shape)
     
+    # Task 4
     W, b = Task4.init_params()
     activations = [Task4.sigmoid, Task4.sigmoid]
 
@@ -36,6 +37,7 @@ if __name__ == '__main__':
     print("a: ", a)
     print("z: ", z)
 
+    # Task 5
     d_act = [Task5.d_sigmoid, Task5.d_sigmoid]
     dW, db, e = Task5.back_prop(y[1], W, b, d_act, a, z)
 
@@ -53,6 +55,7 @@ if __name__ == '__main__':
     print("W[0]: ", W_array[0])
 
 
+    # Task 6
     
     WTrainStandard = [None] * len(W)
     bTrainStandard = [None] * len(b)
