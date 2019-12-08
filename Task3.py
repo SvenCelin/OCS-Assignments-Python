@@ -13,12 +13,24 @@ class norm1:
         plt.show()
 
 #Vary the mean and SD to generate different plots
+
+mu, sigma = 0, 0.05 # mean and standard deviation
+s = np.random.normal(mu, sigma, 1000)
+
+
 mean1 = 0 
 sd1 = 0.05
 
 c = np.random.normal(mean1, sd1, 3000)
         
-w1, x1, z1 = plt.hist(c, 100, normed=True) #hist
+w1, b1, z1 = plt.hist(c, 100, density=True) #hist
 
-hist1 = norm1(mean1, sd1, x1)
-hist1.dist_curve()
+print(w1)
+print(b1)
+#print(z1)
+
+#hist1 = norm1(mean1, sd1, x1)
+#hist1.dist_curve()
+
+#plt.plot(z1, 1/(x1 * np.sqrt(2 * np.pi)) * np.exp( - (z1 - w1)**2 / (2 * x1**2) ), linewidth=2, color='y')
+#plt.show()
