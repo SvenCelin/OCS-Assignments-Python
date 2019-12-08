@@ -10,6 +10,23 @@ dtype = np.float64
 def sigmoid(x):
     return 1. / (1 + np.exp(-x))
 
+#a= ln(1 + exp(z))
+def lnAct(x):
+    return np.log(1 + np.exp(x))
+
+def softMax(X):
+    y = 0
+
+    for numer in X:
+        sum = 0
+        for elem in X:
+            sum += np.exp(elem)
+        temp = numer/sum
+        if(temp > y):
+            y = temp
+    
+    return y
+
 def feed_forward(x, W, b, act):
     # convert to column vector
     x = x[:, np.newaxis]

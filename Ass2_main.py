@@ -23,7 +23,7 @@ if __name__ == '__main__':
     print('Test data:', x_test.shape, y_test.shape)
     
     W, b = Task4.init_params()
-    activations = [Task4.sigmoid, Task4.sigmoid]
+    activations = [Task4.lnAct, Task4.softMax]
 
     x = np.asarray(x_test)
     y = np.asarray(y_test)
