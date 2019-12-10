@@ -2,6 +2,8 @@ import numpy as np
 from scipy.optimize import approx_fprime
 
 import matplotlib.pyplot as plt
+
+import Task4
 dtype = np.float64
 
 nabla_f = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))
@@ -36,6 +38,16 @@ def steepestDescent(x_k, K, t, d, constantStep):
         if(constantStep == False):
             t = armijo(K, x_k)
     return x_k
+
+def train(x, W, b, act, y):
+    inputY = [ [ 0 for i in range(4) ] for j in range(len(y)) ] 
+    i = 0
+    for elem in y:
+        inputY[i][elem] = 1
+        i+=1
+    
+    temp, resultY = Task4.feed_forward(x, W, b, act)
+    
 
 def compareError(S, armijoErr, standardErr):
     sum = 0

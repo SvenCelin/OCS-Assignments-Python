@@ -42,7 +42,9 @@ if __name__ == '__main__':
     a, z = Task4.feed_forward(x[1], W, b, activations)
     
     print("a: ", a)
+    print("a.shape: ", np.asarray(a).shape)
     print("z: ", z)
+    print("z.shape: ", np.asarray(z).shape)
 
     d_act = [Task5.d_lnAct, Task5.d_softmax]
     dW, db, e = Task5.back_prop(y[1], W, b, d_act, a, z)
