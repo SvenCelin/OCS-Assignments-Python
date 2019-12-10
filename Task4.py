@@ -22,10 +22,12 @@ def softMax(X):
         for elem in X:
             sum += np.exp(elem)
         temp = np.exp(numer)/sum
+        print("temp = ", temp)
         if(temp > y):
             y = temp
     
     print("Y of softmax = ", y)
+    #NEKAKO VRACA 1 KADA NE SMIJE
     return y
     """
 
@@ -66,7 +68,7 @@ def loss(y, y_tilde):
 def init_params(N_H=4):
     # initialize parameters
     W = [rng.rand(N_H, 3).astype(dtype),  # W0
-         rng.rand(1, N_H).astype(dtype)]  # W1
+         rng.rand(4, N_H).astype(dtype)]  # W1
     b = [rng.rand(N_H,1).astype(dtype),     # b0
-         rng.rand(1,1).astype(dtype)]     # b1
+         rng.rand(4,1).astype(dtype)]     # b1
     return W, b

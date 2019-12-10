@@ -21,8 +21,8 @@ def d_softmax(X):
     i = 0
 
     for x in X:
-        res = np.exp(x)*sum + np.exp(x)*np.exp(x)
-        res /= np.square(sum)
+        res = np.exp(x)*sum - np.exp(x)*np.exp(x)
+        res = res / (sum*sum)
         h[i] = res
         i+=1
     return h
