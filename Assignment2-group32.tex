@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}         %% What type of document you're writing.
+
+
+%%%%% Preamble
+
+%% Packages to use
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
+\usepackage[utf8]{inputenc}
+\usepackage{chngcntr}
+\usepackage{graphicx}
+\counterwithin*{equation}{section}
+
+%% Title Information.
+
+\title{Assignment 2 \\ OCS}
+\author{Marko Ivančić \and Mauro Jurada}
+\date{11 December 2019}           %% By default, LaTeX uses the current date
+
+%%%%% The Document
+
+\begin{document}
+
+\maketitle
+
+\textbf{Show and describe all your results in the report!}
+
+\section{Size of matrices, number of learnable parameters}
+For the Swiss roll dataset at hand, what is the size of the matrices $W^0, W^1$, and the bias terms $b^0$ and $b^1$? Specify the number of learnable parameters of the neural network as a function of $N_H$
+
+\section{Derivative of the total loss}
+Compute  the  derivative  of  the  total  loss  w.r.t.   to  all  model  parameters  using  the  results  from  the  practical exercise session.
+
+\section{Initialization of the parameters}
+Initialize the parameters using a normal distribution with $\mu= 0 \text{ and } \sigma= 0.05$
+
+\section{Forward pass}
+Implement the forward pass of the network.
+
+\section{Backward pass}
+Implement the backward pass using the back-propagation algorithm.
+
+\section{Training the neural network}
+Train the neural network using the provided training data for 1000 iterations with the steepest descent algorithm for 
+$
+N_H\in \{4,32,512\}
+$.\\
+–Select a suitable step size $t^k\in [0.1,0.001] $ and keep it constant over the iterations.\\
+–Select the step size with the Armijo rule in each iteration.
+
+\section{Training error vs. accuracy}
+Compare the training error and the accuracy of both trainings over the iterations in a plot.  The accuracy is defined as the average number of correctly classified samples
+
+$$
+	\mathcal{A} = \dfrac{1}{S}\sum_{n=1}^{S}\delta(y^s,\tilde y^s) \quad\text{with}\; \delta(u, v) = 
+	\left\{
+	\begin{aligned}
+		1 \quad & \text{if } u = v\\
+		0 \quad & \text{else,}\\ 
+	 \end{aligned} 
+	 \right.
+$$
+
+where $\delta$ is the indicator function.
+
+\section{Applying the learned network}
+Apply the learned network to thetest data and report the loss and the accuracy.
+
+\section{3D scatter plot}
+Create  a  3D  scatter  plot  showing  the  samples $x^s$ with  the  true  label $y^s$ and  your  predicted  label $\tilde y^s$ for  the training and test dataset.  Discuss the obtained model performance.
+
+\end{document}
+
