@@ -58,7 +58,11 @@ def steepestDescent(x_k, K, d, constantStep, pos, x, W, b, activations, inY):
     return x_k
 
 def Loss(y,y_tilde):
-    return -(y*np.log(y_tilde))
+    print("y_tilde shape: ", np.asarray(y_tilde).shape)
+    y_tilde = np.asarray(y_tilde)
+    y_tilde = y_tilde[:, np.newaxis]
+    temp1 = np.log(np.asarray(y_tilde))
+    return -(y*temp1)
     
 def dLoss(y,y_tilde):
     return -(y/y_tilde)
@@ -98,12 +102,11 @@ def train(x, W, b, y_test, y_train, K):
         b_constant0 = steepestDescent(inb0, K, db[0], True, 2, x[i], W, b, activations, y_train[i])
         b_constant1 = steepestDescent(inb1, K, db[1], True, 3, x[i], W, b, activations, y_train[i])
 
-        """
         print("ARMIJO STEP")
-        W_armijo0 = steepestDescent(inW0, K, dW[0], False, 0, x[i], W, b, activations, y[i])
-        W_armijo1 = steepestDescent(inW1, K, dW[1], False, 1, x[i], W, b, activations, y[i])
-        b_armijo0 = steepestDescent(inb0, K, db[0], False, 2, x[i], W, b, activations, y[i])
-        b_armijo1 = steepestDescent(inb1, K, db[1], False, 3, x[i], W, b, activations, y[i])
+        W_armijo0 = steepestDescent(inW0, K, dW[0], False, 0, x[i], W, b, activations, y_train[i])
+        W_armijo1 = steepestDescent(inW1, K, dW[1], False, 1, x[i], W, b, activations, y_train[i])
+        b_armijo0 = steepestDescent(inb0, K, db[0], False, 2, x[i], W, b, activations, y_train[i])
+        b_armijo1 = steepestDescent(inb1, K, db[1], False, 3, x[i], W, b, activations, y_train[i])
 
         W[0] = W_constant0
         W[1] = W_constant1
@@ -123,6 +126,8 @@ def train(x, W, b, y_test, y_train, K):
 
     sumConstant /= len(y)
     sumArmijo /= len(y)
+    
+    """
     """
     """
     activations = [Task4.lnAct, Task4.softMax]
