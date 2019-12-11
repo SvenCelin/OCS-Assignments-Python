@@ -19,19 +19,6 @@ def softMax(X):
     exps = np.exp(X)
     exps = exps/ np.sum(exps)
     return exps
-    """
-
-    exps = np.exp(X)
-    exps = exps/ np.sum(exps)
-
-    y = 0
-    for x in exps:
-        if(x > y):
-            y = x
-    print("Y of softmax = ", y)
-    return y
-    
-    """
     
 
 def feed_forward(x, W, b, act):

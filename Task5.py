@@ -13,20 +13,6 @@ def d_sigmoid(x):
 
 def d_lnAct(x):
     return np.exp(x)/(1+np.exp(x))
-"""
-def d_softmax(X):
-    sum = np.sum(np.exp(X))
-    
-    h = [None] * len(X)
-    i = 0
-
-    for x in X:
-        res = np.exp(x)*sum - np.exp(x)*np.exp(x)
-        res = res / (sum*sum)
-        h[i] = res
-        i+=1
-    return h
-    """
 
 def d_softmax(X):
     pred = Task4.softMax(X)
@@ -39,41 +25,11 @@ def d_softmax(X):
             else:
                 result[i, j] = -pred[i]*pred[j]
     return result
-    """
-    X = np.asarray(X).flatten()
-    print("X SHAPE: ", X.shape)
-    sum = np.sum(np.exp(X))
-    sumSq = sum*sum
-    
-    h = [ [ 0 for i in range(len(X))] for j in range(len(X)) ] 
-    #h = [None] * len(X)
-
-    for i in range(len(X)):
-        for j in range(len(X)):
-            if(i != j):
-                #h[i][j] = -softMax(X)[i]*(softmax(X)[j])
-                h[i][j] = -np.exp(X[j])*np.exp(X[i])/sumSq
-            else:
-                #h[i][j] = softMax(X)[i]*(1 - softmax(X)[i])
-                h[i][j] = (np.exp(X[j])*sum - np.exp(X[j])*np.exp(X[j]))/sumSq
-
-    return h
-    """
 
 
 def d_loss(y,y_tilde):
     return -(y/y_tilde)
     #return -(y/y_tilde) + (1+y)/(1-y_tilde)
-    """
-    sum = 0
-    for i in S:
-        for j in N_O:
-            if(dy[i][j] == 0):
-                print("DIVIDE BY ZERO!!!!")
-            else:
-                sum -= y[i][j]/dy[i][j]
-    return sum/S
-    """
 
 def back_prop(y, W, b, d_act, a, z):
     # compute errors e in reversed order

@@ -16,7 +16,7 @@ for i in range(N_H):
     for j in range(4):
         w0[i][j] = w0_vector[k]
         k += 1
-print (w0)
+
 
 w1 = [[0 for x in range(N_H)] for y in range(4)]
 k = 0
@@ -24,9 +24,5 @@ for i in range(N_H):
     for j in range(4):
         w1[i][j] = w1_vector[k]
         k += 1
-print (w1)
 
-print (b0)
-print (b1)
-
-
+return w0, w1, b0, b1
