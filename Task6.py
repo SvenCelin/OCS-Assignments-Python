@@ -49,8 +49,7 @@ def armijo(K, x_k, pos, x, W, b, activations, inY):
         #update_plots(k, x_k, t_k)
 
 def steepestDescent(x_k, K, d, constantStep, pos, x, W, b, activations, inY):
-    print("x_k shape: ", x_k.shape)
-    print("d shape: ", d.shape)
+    print("DESCENT DOWN THE HILL")
     t = 0.01
     for k in range(K):
         if(constantStep == False):
@@ -59,75 +58,52 @@ def steepestDescent(x_k, K, d, constantStep, pos, x, W, b, activations, inY):
     return x_k
 
 def Loss(y,y_tilde):
-
-    print("Loss, y SHAPE: ", np.asarray(y).shape)
-    print("Loss, y_tilde SHAPE: ", np.asarray(y_tilde).shape)
     return -(y*np.log(y_tilde))
     
 def dLoss(y,y_tilde):
-
-    print("DLoss, y SHAPE: ", np.asarray(y).shape)
-    print("DLoss, y_tilde SHAPE: ", np.asarray(y_tilde).shape)
     return -(y/y_tilde)
 
-    """
-def Loss(inY, resY, N, S):
-    sum = 0
-    for i in S:
-        for j in N:
-             sum -= inY[i][j]*np.log(resY[i][j])
-    return sum/S
+def train(x, W, b, y_test, y_train, K):
     
-def dLoss(inY, resY, N, S):
-    sum = 0
-    for i in S:
-        for j in N:
-             sum -= inY[i][j]/(resY[i][j])
-    return sum/S
-    
-def deriveP(inY, resY, S, W, b, d_act, a):
-    # compute errors e in reversed order
-    print("BACK PROPAGATION")
-    assert(len(a) == len(resY))
-    e = [None] * len(a)
-    e[-1] = d_act[-1](z[-1]) @ d_loss(y, a[-1]) # delta_L
-    for l in range(len(a) - 2, 0, -1):
-        e[l] = d_act[l-1](resY[l]) * (W[l].T @ e[l+1])
-            
-    # compute gradient for W an b
-    dW = [None] * len(a)
-    db = [None] * len(a)
-    for l in range(len(a) - 1):
-        dW[l] = np.outer(e[l+1], a[l])
-        db[l] = e[l+1]
-        
-    return dW, db
-    """
-
-def train(x, W, b, y, K, constantStep):
-    
+    print("TRAINING FOR THE WORLD MARTIAL ARTS TOURNAMENT")
     inW0 = W[0]
     inW1 = W[1]
     inb0 = b[0]
     inb1 = b[1]
     sumConstant = 0
     sumArmijo = 0
-    for i in range(len(y)):
+    for i in range(len(y_train)):
+    #a, z = Task4.feed_forward(x[0], W, b, activations)
+    #dW, db, e = Task5.back_prop(inputY[0], W, b, d_act, a, z)
         activations = [Task4.lnAct, Task4.softMax]
-        a, resultY = Task4.feed_forward(x, W, b, activations)
+        a, resultY = Task4.feed_forward(x[i], W, b, activations)
 
         d_act = [Task5.d_lnAct, Task5.d_softmax]
-        dW, db, e = Task5.back_prop(y[i], W, b, d_act, a, resultY)
+        dW, db, e = Task5.back_prop(y_train[i], W, b, d_act, a, resultY)
 
-        W_constant0 = steepestDescent(inW0, K, dW[0], False, 0, x, W, b, activations, y[i])
-        W_constant1 = steepestDescent(inW1, K, dW[1], False, 1, x, W, b, activations, y[i])
-        b_constant0 = steepestDescent(inb0, K, db[0], False, 2, x, W, b, activations, y[i])
-        b_constant1 = steepestDescent(inb1, K, db[1], False, 3, x, W, b, activations, y[i])
+        """
+        print("W[0]: ", np.asarray(W[0]).shape)
+        print("W[1]: ", np.asarray(W[1]).shape)
+        print("b[0]: ", np.asarray(b[0]).shape)
+        print("b[1]: ", np.asarray(b[1]).shape)
+        print("dW[0]: ", np.asarray(dW[0]).shape)
+        print("dW[1]: ", np.asarray(dW[1]).shape)
+        print("db[0]: ", np.asarray(db[0]).shape)
+        print("db[1]: ", np.asarray(db[1]).shape)
+        """
+        
+        print("CONSTANT STEP")
+        W_constant0 = steepestDescent(inW0, K, dW[0], True, 0, x[i], W, b, activations, y_train[i])
+        W_constant1 = steepestDescent(inW1, K, dW[1], True, 1, x[i], W, b, activations, y_train[i])
+        b_constant0 = steepestDescent(inb0, K, db[0], True, 2, x[i], W, b, activations, y_train[i])
+        b_constant1 = steepestDescent(inb1, K, db[1], True, 3, x[i], W, b, activations, y_train[i])
 
-        W_armijo0 = steepestDescent(inW0, K, dW[0], True, 0, x, W, b, activations, y[i])
-        W_armijo1 = steepestDescent(inW1, K, dW[1], True, 1, x, W, b, activations, y[i])
-        b_armijo0 = steepestDescent(inb0, K, db[0], True, 2, x, W, b, activations, y[i])
-        b_armijo1 = steepestDescent(inb1, K, db[1], True, 3, x, W, b, activations, y[i])
+        """
+        print("ARMIJO STEP")
+        W_armijo0 = steepestDescent(inW0, K, dW[0], False, 0, x[i], W, b, activations, y[i])
+        W_armijo1 = steepestDescent(inW1, K, dW[1], False, 1, x[i], W, b, activations, y[i])
+        b_armijo0 = steepestDescent(inb0, K, db[0], False, 2, x[i], W, b, activations, y[i])
+        b_armijo1 = steepestDescent(inb1, K, db[1], False, 3, x[i], W, b, activations, y[i])
 
         W[0] = W_constant0
         W[1] = W_constant1
@@ -135,7 +111,7 @@ def train(x, W, b, y, K, constantStep):
         b[1] = b_constant1
         
         a, resultY = Task4.feed_forward(x, W, b, activations)
-        sumConstant += compareError(y[i], resultY)
+        sumConstant += compareError(y_test, resultY)
 
         W[0] = W_armijo0
         W[1] = W_armijo1
@@ -143,11 +119,12 @@ def train(x, W, b, y, K, constantStep):
         b[1] = b_constant1
         
         a, resultY = Task4.feed_forward(x, W, b, activations)
-        sumArmijo += compareError(y[i], resultY)
+        sumArmijo += compareError(y_test, resultY)
 
     sumConstant /= len(y)
     sumArmijo /= len(y)
-        """
+    """
+    """
     activations = [Task4.lnAct, Task4.softMax]
     a, resultY = Task4.feed_forward(x, W, b, activations)
 
