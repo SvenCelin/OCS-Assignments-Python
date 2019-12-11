@@ -61,7 +61,7 @@ def Loss(y,y_tilde):
     print("y_tilde shape: ", np.asarray(y_tilde).shape)
     y_tilde = np.asarray(y_tilde)
     y_tilde = y_tilde[:, np.newaxis]
-    temp1 = np.log(np.asarray(y_tilde))
+    temp1 = np.log(y_tilde.toarray())
     return -(y*temp1)
     
 def dLoss(y,y_tilde):
