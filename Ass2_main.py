@@ -20,34 +20,26 @@ if __name__ == '__main__':
     # get the test data
     x_test = data_set['x_test']
     y_test = data_set['y_test']
-
-    print('Training data:', x_train.shape, y_train.shape)
-    print('Test data:', x_test.shape, y_test.shape)
-
-    print('x_train data:', x_train)
-    print('y_train data:', y_train)
-
-    print('x_test data:', x_test)
-    print('y_test data:', y_test)
     
     W, b = Task4.init_params()
     activations = [Task4.lnAct, Task4.softMax]
 
     x = np.asarray(x_test)
     y = np.asarray(y_test)
-  
-    print('W:', W)
-    print('b:', b)
-    
-    a, z = Task4.feed_forward(x[1], W, b, activations)
-    
-    print("a: ", a)
-    print("a.shape: ", np.asarray(a).shape)
-    print("z: ", z)
-    print("z.shape: ", np.asarray(z).shape)
+    a, z = Task4.feed_forward(x[0], W, b, activations)
+
+    inputY = [ [ 0 for i in range(4) ] for j in range(len(y)) ] 
+    #inputY = np.asarray(inputY)
+    #print("inputY shape: ", inputY.shape)
+    for i in range(len(y)):
+        for j in range(4):
+            index = int(y[i])
+            inputY[i][index] = 1
+
+    print("inputY = ", inputY)
 
     d_act = [Task5.d_lnAct, Task5.d_softmax]
-    dW, db, e = Task5.back_prop(y[1], W, b, d_act, a, z)
+    dW, db, e = Task5.back_prop(inputY[0], W, b, d_act, a, z)
 
     print("d_act: ", d_act)
     print("dw: ", dW)

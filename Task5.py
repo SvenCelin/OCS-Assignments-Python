@@ -29,40 +29,54 @@ def d_softmax(X):
     """
 
 def d_softmax(X):
+    X = np.asarray(X).flatten()
+    print("X SHAPE: ", X.shape)
     sum = np.sum(np.exp(X))
     sumSq = sum*sum
     
-    h = [ [ 0 for i in len(X) ] for j in range(len(X)) ] 
+    h = [ [ 0 for i in range(len(X))] for j in range(len(X)) ] 
     #h = [None] * len(X)
 
-    for i in len(X):
-        for j in len(X):
+    for i in range(len(X)):
+        for j in range(len(X)):
             if(i != j):
-                h[i][j] = -np.exp(X[j])*np.exp[i]/sumSq
+                #h[i][j] = -softMax(X)[i]*(softmax(X)[j])
+                h[i][j] = -np.exp(X[j])*np.exp(X[i])/sumSq
             else:
+                #h[i][j] = softMax(X)[i]*(1 - softmax(X)[i])
                 h[i][j] = (np.exp(X[j])*sum - np.exp(X[j])*np.exp(X[j]))/sumSq
 
     return h
 
-#def d_loss(y, y_tilde):
-#    return -y/y_tilde + (1-y)/(1-y_tilde)
 
-def d_loss(y,dy, N_O, S):
+def d_loss(y,y_tilde):
+
+    print("y SHAPE: ", np.asarray(y).shape)
+    print("y_tilde SHAPE: ", np.asarray(y_tilde).shape)
+    return -(y/y_tilde)
+    """
     sum = 0
     for i in S:
         for j in N_O:
             if(dy[i][j] == 0):
                 print("DIVIDE BY ZERO!!!!")
             else:
-                sum += y[i][j]/dy[i][j]
+                sum -= y[i][j]/dy[i][j]
     return sum/S
+    """
 
 def back_prop(y, W, b, d_act, a, z):
     # compute errors e in reversed order
     print("BACK PROPAGATION")
+    
+    #y = y[:, np.newaxis]
     assert(len(a) == len(z))
     e = [None] * len(a)
-    e[-1] = d_act[-1](z[-1]) * d_loss(y, z, len(y), 1) # delta_L
+    temp1 = d_act[-1](z[-1])
+    temp2 = d_loss(y, a[-1])
+    print("temp1 SHAPE: ", np.asarray(temp1).shape)
+    print("temp2 SHAPE: ", np.asarray(temp2).shape)
+    e[-1] = d_act[-1](z[-1]) @ d_loss(y, a[-1]) # delta_L
     for l in range(len(a) - 2, 0, -1):
         e[l] = d_act[l-1](z[l]) * (W[l].T @ e[l+1])
             

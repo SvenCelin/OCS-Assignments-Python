@@ -7,9 +7,6 @@ import Task4
 import Task5
 dtype = np.float64
 
-nabla_f = lambda x: np.where(x > 1, 3*x/2 + 1/2, np.where(x < -1, 3*x/2 - 1/2, 2*x))
-f = lambda x: np.where(np.abs(x) > 1, 3*(1-np.abs(x))**2/4 - 2*(1-np.abs(x)), x**2-1)
-
 def armijo(K, x_k, pos, x, W, b, activations, inY):
     s = 1.
     sigma = 0.1
@@ -95,11 +92,7 @@ def deriveP(inY, resY, S, W, b, d_act, a):
     return dW, db
 
 def train(x, W, b, y, K, constantStep):
-    inputY = [ [ 0 for i in range(4) ] for j in range(len(y)) ] 
-    i = 0
-    for elem in y:
-        inputY[i][elem] = 1
-        i+=1
+    
     
     activations = [Task4.lnAct, Task4.softMax]
     a, resultY = Task4.feed_forward(x, W, b, activations)
