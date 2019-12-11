@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization!
 import numdifftools as nd
 
+import Task6
 import Task4
 import Task5
-import Task6
 
 dtype = np.float64
 
@@ -22,6 +22,9 @@ if __name__ == '__main__':
     y_test = data_set['y_test']
     
     W, b = Task4.init_params()
+
+    
+    """
     activations = [Task4.lnAct, Task4.softMax]
 
     x = np.asarray(x_test)
@@ -45,6 +48,27 @@ if __name__ == '__main__':
     print("dw: ", dW)
     print("db: ", db)
     print("e: ", e)
+    """
+
+    y_train_mat = np.zeros((len(y_train), 4))
+    #y_train_mat = [ [ 0 for i in range(4) ] for j in range(len(y_train)) ] 
+    for i in range(len(y_train)):
+        for j in range(4):
+            index = int(y_train[i])
+            y_train_mat[i][index] = 1
+
+    print("y_train_mat = ", y_train_mat)
+
+    y_test_mat = np.zeros((len(y_test), 4))
+    #y_test_mat = [ [ 0 for i in range(4) ] for j in range(len(y_test)) ] 
+    for i in range(len(y_test)):
+        for j in range(4):
+            index = int(y_test[i])
+            y_test_mat[i][index] = 1
+
+    print("y_test_mat = ", y_test_mat)
+
+    Task6.train(x_train, W, b, y_test_mat, y_train_mat, 3)
 
     # x train
     #fig = plt.figure()
