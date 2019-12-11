@@ -15,20 +15,10 @@ def lnAct(x):
     return np.log(1 + np.exp(x))
 
 def softMax(X):
-    y = 0
-
-    for numer in X:
-        sum = 0
-        for elem in X:
-            sum += np.exp(elem)
-        temp = np.exp(numer)/sum
-        print("temp = ", temp)
-        if(temp > y):
-            y = temp
     
-    print("Y of softmax = ", y)
-    #NEKAKO VRACA 1 KADA NE SMIJE
-    return y
+    exps = np.exp(X)
+    exps = exps/ np.sum(exps)
+    return exps
     """
 
     exps = np.exp(X)
@@ -49,17 +39,11 @@ def feed_forward(x, W, b, act):
     x = x[:, np.newaxis]
     a = [x]
     z = [x]
-    print("FEED FORWARD")
-    print("x = ", x)
-    print("a = ", a)
-    print("z = ", z)
-    print("W = ", W)
-    print("b = ", b)
     for i, (Wi, bi, acti) in enumerate(zip(W, b, act)):
-        print("one iteration, i = ", i)
         z.append(Wi @ a[i] + bi)
         a.append(acti(z[-1]))
     
+    print("FORWARD")
     return a, z
 
 def loss(y, y_tilde):

@@ -29,6 +29,17 @@ def d_softmax(X):
     """
 
 def d_softmax(X):
+    pred = Task4.softMax(X)
+    result = np.zeros((len(X), len(X)))
+
+    for i in range(len(X)):
+        for j in range(len(X)):
+            if(i == j):
+                result[i, j] = pred[i]*(1-pred[j])
+            else:
+                result[i, j] = -pred[i]*pred[j]
+    return result
+    """
     X = np.asarray(X).flatten()
     print("X SHAPE: ", X.shape)
     sum = np.sum(np.exp(X))
@@ -47,13 +58,12 @@ def d_softmax(X):
                 h[i][j] = (np.exp(X[j])*sum - np.exp(X[j])*np.exp(X[j]))/sumSq
 
     return h
+    """
 
 
 def d_loss(y,y_tilde):
-
-    print("y SHAPE: ", np.asarray(y).shape)
-    print("y_tilde SHAPE: ", np.asarray(y_tilde).shape)
     return -(y/y_tilde)
+    #return -(y/y_tilde) + (1+y)/(1-y_tilde)
     """
     sum = 0
     for i in S:
@@ -69,13 +79,10 @@ def back_prop(y, W, b, d_act, a, z):
     # compute errors e in reversed order
     print("BACK PROPAGATION")
     
-    #y = y[:, np.newaxis]
+    y = y[:, np.newaxis]
     assert(len(a) == len(z))
     e = [None] * len(a)
-    temp1 = d_act[-1](z[-1])
-    temp2 = d_loss(y, a[-1])
-    print("temp1 SHAPE: ", np.asarray(temp1).shape)
-    print("temp2 SHAPE: ", np.asarray(temp2).shape)
+    
     e[-1] = d_act[-1](z[-1]) @ d_loss(y, a[-1]) # delta_L
     for l in range(len(a) - 2, 0, -1):
         e[l] = d_act[l-1](z[l]) * (W[l].T @ e[l+1])
