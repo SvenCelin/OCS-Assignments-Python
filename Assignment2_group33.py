@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import approx_fprime
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import axes3d, Axes3D #<-- Note the capitalization!
+from mpl_toolkits.mplot3d import axes3d, Axes3D
 import numdifftools as nd
 
 import Task6
@@ -12,10 +12,8 @@ import Task5
 dtype = np.float64
 rng = np.random.RandomState(42)
 
-
-#Tesk3
 def initNormalDistribution():
-    N_H = 4 #number of hidden layers
+    N_H = 4
 
     mu, sigma = 0, 0.05 # mean and standard deviation
 
@@ -41,12 +39,6 @@ def initNormalDistribution():
 
     return w0, w1, b0, b1
 
-
-
-
-
-
-#Task4
 def sigmoid(x):
     return 1. / (1 + np.exp(-x))
 
@@ -76,20 +68,6 @@ def init_params(N_H=4):
          rng.rand(4,1).astype(dtype)]     # b1
     return W, b
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#task5
 def d_sigmoid(x):
     sig = sigmoid(x)
     return sig*(1-sig)
@@ -112,7 +90,6 @@ def d_softMax(X):
         i += 1
     return result
 
-
 def d_loss(y,y_tilde):
     return -(y/y_tilde)
 
@@ -133,79 +110,13 @@ def backwards(y, W, b, d_act, a, z):
         i += 1
     return dW, db, temp_e
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#task6
-def armijo(K, x_k, pos, x, W, b, activations, inY):
-    s = 1.
-    sigma = 0.1
-    beta = 0.5
-    if(pos == 0):
-        W[0] = x_k
-    if(pos == 1):
-        W[1] = x_k
-    if(pos == 2):
-        b[0] = x_k
-    if(pos == 3):
-        b[1] = x_k
-    a, resY = feed_forward(x, W, b, activations)
-
-    
-    loss = Loss(inY, resY)
-    d_loss = dLoss(inY, resY)
-
-    for k in range(K):
-        for m_k in range(10):
-             t_k = s*beta**m_k
-             if(pos == 0):
-                 W[0] = x_k - t_k*d_loss
-             if(pos == 1):
-                 W[1] = x_k - t_k*d_loss
-             if(pos == 2):
-                 b[0] = x_k - t_k*d_loss
-             if(pos == 3):
-                 b[1] = x_k - t_k*d_loss
-
-             a, newResY = feed_forward(x, W, b, activations)
-             newLoss = Loss(inY, resY)
-
-             if  LA.norm(loss - newLoss) >= LA.norm(sigma*t_k*(d_loss**2)):
-                 break
-        x_k -= t_k * d_loss
-
-    return t_k
-        #update_plots(k, x_k, t_k)
-
-def steepestDescent(x_k, K, d, constantStep, pos, x, W, b, activations, inY):
-    
-    t = 0.01
+def steepestDescent(x_k, K, d, pos, x, W, b, activations, inY):
+    t = 0.05
     i = 0
     while (i < K):
-        if(constantStep == False):
-            t = armijo(K, x_k, pos, x, W, b, activations, inY)
         x_k += t * d
         i += 1
     return x_k
-
-def Loss(y,y_tilde):
-    
-    temp1 = np.log(y_tilde)
-    return -(y*temp1)
-    
-def dLoss(y,y_tilde):
-    return -(y/y_tilde)
 
 def train(x, W, b, y_test, y_train, K):
     W0 = W[0]
@@ -213,38 +124,33 @@ def train(x, W, b, y_test, y_train, K):
     b0 = b[0]
     b1 = b[1]
     i = 0
+    accuracy = 0
     while ( i < len(y_train)):
         activations = [softPlus, softMax]
-        a, resultY = feed_forward(x[i], W, b, activations)
+        a, y_tilde = feed_forward(x[i], W, b, activations)
         d_act = [d_softPlus, d_softMax]
-        dW, db, e = backwards(y_train[i], W, b, d_act, a, resultY)
-        W_constant0 = steepestDescent(W0, K, dW[0], True, 0, x[i], W, b, activations, y_train[i])
-        W_constant1 = steepestDescent(W1, K, dW[1], True, 1, x[i], W, b, activations, y_train[i])
-        b_constant0 = steepestDescent(b0, K, db[0], True, 2, x[i], W, b, activations, y_train[i])
-        b_constant1 = steepestDescent(b1, K, db[1], True, 3, x[i], W, b, activations, y_train[i])
+        dW, db, e = backwards(y_train[i], W, b, d_act, a, y_tilde)
+        trainingW0 = steepestDescent(W0, K, dW[0], 0, x[i], W, b, activations, y_train[i])
+        trainingW1 = steepestDescent(W1, K, dW[1], 1, x[i], W, b, activations, y_train[i])
+        training_b0 = steepestDescent(b0, K, db[0], 2, x[i], W, b, activations, y_train[i])
+        training_b1 = steepestDescent(b1, K, db[1], 3, x[i], W, b, activations, y_train[i])
+
+        W[0] = trainingW0
+        W[1] = trainingW1
+        b[0] = training_b0
+        b[1] = training_b1
+        
+        a, y_tilde = feed_forward(x[i], W, b, activations)
+
+        accuracy+= checkAccuracy(y_test, y_tilde)
         i += 1
+    accuracy /= len(y_train)
   
-def compareError(y, y_tilde):
+def checkAccuracy(y, y_tilde):
     if(y == y_tilde):
         return 1
     else:
         return 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def drawPlot(x_train, y_train):
     x_x = [None] * len(x_test)
@@ -282,10 +188,6 @@ def drawPlot(x_train, y_train):
         ax.scatter(x_x[i], x_y[i], x_z[i], c="black", marker=amarker[i], cmap='viridis', linewidth=0.5)
 
     plt.show()
-
-
-
-
 
 if __name__ == '__main__':
     data_set = np.load('./data.npz')
