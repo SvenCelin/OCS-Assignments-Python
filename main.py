@@ -96,6 +96,24 @@ def dg_motion(x, l):
     x2 = (x[1] - l[1])/g
     res = [x1, x2]
     return res
+    
+def connectpoints(x1, x2, y1, y2):
+    #organize x and y into a list or an array
+    x = [x1, x2]
+    y = [y1, y2]
+    
+    #prepare contour variables and draw it. Z can probably be made with any combination of X and Y
+    X, Y = np.meshgrid(x, y)
+    Z = np.sqrt(X**2 + Y**2)
+    fig, ax = plt.subplots()
+    cp = ax.contour(X, Y, Z)
+    
+    #Draw X markers on points [x1, y1] and [x2, y2]. Each points (except first and last) will be drawn twice, but probably wont be seen
+    plt.scatter(x, y, markersize=15, marker = 'x')
+    
+    plt.plot([x1,x2],[y1,y2],'k-')
+    #plt.plot([x1,x2],[y1,y2], marker='x')
+    #plt.plot([x1,x2],[y1,y2], marker=matplotlib.markers.CARETDOWNBASE, 'k-')
 
 def estimate_position(towers, z):
     xi = [[2,2]]
@@ -107,6 +125,7 @@ def estimate_position(towers, z):
     H2 = np.eye(2) * 0.01 
     H3 = np.eye(2) * 0.01 
     lamda = 0.6
+    plt.figure(1)
     for i in range(60):
         x = xi[-1]
         """
@@ -161,12 +180,15 @@ def estimate_position(towers, z):
         x_new3 = x - HCt3@GZ3
 
         x_new = (x_new1 + x_new2 + x_new3)/3
+        
+        connectpoints(x[0], x_new[0], x[1], x_new[1])
     
         xi.append(x_new)
         #print("x_new1", x_new1)
         #print("x_new2", x_new2)
         #print("x_new3", x_new3)
         print("x_new", x_new)
+    plt.show()
     pass
 
 
@@ -181,6 +203,7 @@ def estimate_motion(towers, z):
     H2 = np.eye(2) * 0.01 
     H3 = np.eye(2) * 0.01 
     lamda = 0.6
+    plt.figure(2)
     for i in range(2):
         print("\n\nNEW MOTION ITERATION")
         x = xi[-1] 
@@ -236,10 +259,13 @@ def estimate_motion(towers, z):
         x_new = (x_new1 + x_new2 + x_new3)/3
         x_temp = [xi[0][0]*i, xi[0][1]*i]
         v = x_new - x_temp
+        
+        connectpoints(x[0], x_new[0], x[1], x_new[1])
     
         xi.append(x_new)
         print("x_new shape", np.asarray(x_new).shape)
         #print("v", v)
+    plt.show()
     pass
 
 if __name__ == '__main__':
