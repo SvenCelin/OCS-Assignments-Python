@@ -111,10 +111,27 @@ def connectpoints(x1, x2, y1, y2):
     #Draw X markers on points [x1, y1] and [x2, y2]. Each points (except first and last) will be drawn twice, but probably wont be seen
     plt.scatter(x, y, markersize=15, marker = 'x')
     
-    plt.plot([x1,x2],[y1,y2],'k-')
+    #plt.plot([x1,x2],[y1,y2],'k-')
     #plt.plot([x1,x2],[y1,y2], marker='x')
     #plt.plot([x1,x2],[y1,y2], marker=matplotlib.markers.CARETDOWNBASE, 'k-')
 
+def plotPointMarkers(x, y):
+    plt.scatter(x, y, markersize=15, marker = 'x')
+    
+def plotPositions(x_array):
+    #organize x and y into a list or an array
+    x = x_array[:, 0]
+    y = x_array[:, 1]
+    
+    #prepare contour variables and draw it. Z can probably be made with any combination of X and Y
+    X, Y = np.meshgrid(x, y)
+    Z = np.sqrt(X**2 + Y**2)
+    fig, ax = plt.subplots()
+    cp = ax.contour(X, Y, Z)
+    
+    #plt.plot([x1,x2],[y1,y2],'k-')
+    #plt.plot([x1,x2],[y1,y2], marker='x')
+    #plt.plot([x1,x2],[y1,y2], marker=matplotlib.markers.CARETDOWNBASE, 'k-')
 def estimate_position(towers, z):
     xi = [[2,2]]
     x_new1 = [2,2]
