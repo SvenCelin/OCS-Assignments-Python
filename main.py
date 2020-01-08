@@ -55,8 +55,19 @@ def printGZ(GZ1, GZ2, GZ3):
     print("GZ3 data: ", GZ3)
     print("GZ3 shape: ", np.asarray(GZ3).shape)
 
-def matVecMult(C, x):
+def VectorElementMult(C, x):
     res = C[0]*x[0] + C[1]*x[1]
+    return res
+
+def twoVecMult(X, Y):
+    a = X[0]*Y[0]
+    b = X[0]*Y[1]
+    c = X[1]*Y[0]
+    d = X[1]*Y[1]
+    res = [
+        [a, b],
+        [c, d]
+    ]
     return res
 
 def g(x, l):
@@ -142,7 +153,7 @@ def estimate_position(towers, z):
     H2 = np.eye(2) * 0.01 
     H3 = np.eye(2) * 0.01 
     lamda = 0.6
-    plt.figure(1)
+    #plt.figure(1)
     for i in range(60):
         x = xi[-1]
         """
@@ -166,46 +177,49 @@ def estimate_position(towers, z):
         C1t = np.transpose(C1)
         C2t = np.transpose(C2)
         C3t = np.transpose(C3)
-        CtC1 = C1t @ C1
-        CtC2 = C2t @ C2
-        CtC3 = C3t @ C3
+        #CtC1 = C1t @ C1
+        #CtC2 = C2t @ C2
+        #CtC3 = C3t @ C3
+        CtC1 = twoVecMult(C1t, C1)
+        CtC2 = twoVecMult(C2t, C2)
+        CtC3 = twoVecMult(C3t, C3)
         H1 = lamda * H1 + CtC1
         H2 = lamda * H2 + CtC2
         H3 = lamda * H3 + CtC3
         #printHCCt(H1, H2, H3, C1, C2, C3, C1t, C2t, C3t, CtC1, CtC2, CtC3)
 
-        HCt1 = np.linalg.inv(H1) @ (C1t)
-        HCt2 = np.linalg.inv(H2) @ (C2t)
-        HCt3 = np.linalg.inv(H3) @ (C3t)
+        HCt1 = np.linalg.inv(H1)@(C1t)
+        HCt2 = np.linalg.inv(H2)@(C2t)
+        HCt3 = np.linalg.inv(H3)@(C3t)
         #printHCt(HCt1, HCt2, HCt3)
 
         #ZCX1 = np.outer(dg(x, towers[:,0]), x)
         #ZCX2 = np.outer(dg(x, towers[:,1]), x)
         #ZCX3 = np.outer(dg(x, towers[:,2]), x)
-        ZCX1 = z[i, 0] - matVecMult(C1, x)
-        ZCX2 = z[i, 1] - matVecMult(C2, x)
-        ZCX3 = z[i, 2] - matVecMult(C3, x)
+        ZCX1 = z[i, 0] - VectorElementMult(C1, x)
+        ZCX2 = z[i, 1] - VectorElementMult(C2, x)
+        ZCX3 = z[i, 2] - VectorElementMult(C3, x)
         #printZCX(ZCX1, ZCX2, ZCX3)
 
         GZ1 = g(x, towers[:,0]) - z[i, 0]
         GZ2 = g(x, towers[:,1]) - z[i, 1]
         GZ3 = g(x, towers[:,2]) - z[i, 2]
-        #printGZ(GZ1, GZ2, GZ3)
+        printGZ(GZ1, GZ2, GZ3)
 
-        x_new1 = x - HCt1@GZ1
-        x_new2 = x - HCt2@GZ2
-        x_new3 = x - HCt3@GZ3
+        x_new1 = x - HCt1*GZ1
+        x_new2 = x - HCt2*GZ2
+        x_new3 = x - HCt3*GZ3
 
         x_new = (x_new1 + x_new2 + x_new3)/3
         
-        connectpoints(x[0], x_new[0], x[1], x_new[1])
+        #connectpoints(x[0], x_new[0], x[1], x_new[1])
     
         xi.append(x_new)
         #print("x_new1", x_new1)
         #print("x_new2", x_new2)
         #print("x_new3", x_new3)
         print("x_new", x_new)
-    plt.show()
+    #plt.show()
     pass
 
 
@@ -220,7 +234,7 @@ def estimate_motion(towers, z):
     H2 = np.eye(2) * 0.01 
     H3 = np.eye(2) * 0.01 
     lamda = 0.6
-    plt.figure(2)
+    #plt.figure(2)
     for i in range(2):
         print("\n\nNEW MOTION ITERATION")
         x = xi[-1] 
@@ -259,9 +273,9 @@ def estimate_motion(towers, z):
         #ZCX1 = np.outer(dg_motion(x, towers[:,0]), x)
         #ZCX2 = np.outer(dg_motion(x, towers[:,1]), x)
         #ZCX3 = np.outer(dg_motion(x, towers[:,2]), x)
-        ZCX1 = z[i, 0] - matVecMult(C1, x)
-        ZCX2 = z[i, 1] - matVecMult(C2, x)
-        ZCX3 = z[i, 2] - matVecMult(C3, x)
+        ZCX1 = z[i, 0] - VectorElementMult(C1, x)
+        ZCX2 = z[i, 1] - VectorElementMult(C2, x)
+        ZCX3 = z[i, 2] - VectorElementMult(C3, x)
         #printZCX(ZCX1, ZCX2, ZCX3)
 
         GZ1 = g_motion(x, towers[:,0]) - z[i, 0]
@@ -277,12 +291,12 @@ def estimate_motion(towers, z):
         x_temp = [xi[0][0]*i, xi[0][1]*i]
         v = x_new - x_temp
         
-        connectpoints(x[0], x_new[0], x[1], x_new[1])
+        #connectpoints(x[0], x_new[0], x[1], x_new[1])
     
         xi.append(x_new)
         print("x_new shape", np.asarray(x_new).shape)
         #print("v", v)
-    plt.show()
+    #plt.show()
     pass
 
 if __name__ == '__main__':
@@ -301,7 +315,7 @@ if __name__ == '__main__':
     #print("z = ", origZ)
 
     print("START OF ESTIMATE POSITION!!\n")
-    #estimate_position(towers, z)
+    estimate_position(towers, z)
 
     # load the data
     data = np.load('./data_motion.npz')
@@ -314,4 +328,4 @@ if __name__ == '__main__':
     print('Measurements:', z.shape)
 
     print("START OF ESTIMATE MOTION!!\n")
-    estimate_motion(towers, z)
+    #estimate_motion(towers, z)
