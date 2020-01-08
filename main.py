@@ -107,42 +107,35 @@ def dg_motion(x, l):
     x2 = (x[1] - l[1])/g
     res = [x1, x2]
     return res
-    
-def connectpoints(x1, x2, y1, y2):
-    #organize x and y into a list or an array
-    x = [x1, x2]
-    y = [y1, y2]
-    
-    #prepare contour variables and draw it. Z can probably be made with any combination of X and Y
-    X, Y = np.meshgrid(x, y)
-    Z = np.sqrt(X**2 + Y**2)
-    fig, ax = plt.subplots()
-    cp = ax.contour(X, Y, Z)
-    
-    #Draw X markers on points [x1, y1] and [x2, y2]. Each points (except first and last) will be drawn twice, but probably wont be seen
-    plt.scatter(x, y, markersize=15, marker = 'x')
-    
-    #plt.plot([x1,x2],[y1,y2],'k-')
-    #plt.plot([x1,x2],[y1,y2], marker='x')
-    #plt.plot([x1,x2],[y1,y2], marker=matplotlib.markers.CARETDOWNBASE, 'k-')
 
-def plotPointMarkers(x, y):
-    plt.scatter(x, y, markersize=15, marker = 'x')
-    
-def plotPositions(x_array):
-    #organize x and y into a list or an array
+def plotContour(x_array, towers):
+    levels=[10, 30, 50]
+    plt.figure(1, figsize=(7,7))
+    fig1 = plt.gcf()
+
+    #Create a contour grid
+    x_array = np.asarray(x_array)
     x = x_array[:, 0]
     y = x_array[:, 1]
-    
-    #prepare contour variables and draw it. Z can probably be made with any combination of X and Y
     X, Y = np.meshgrid(x, y)
     Z = np.sqrt(X**2 + Y**2)
     fig, ax = plt.subplots()
-    cp = ax.contour(X, Y, Z)
-    
-    #plt.plot([x1,x2],[y1,y2],'k-')
-    #plt.plot([x1,x2],[y1,y2], marker='x')
-    #plt.plot([x1,x2],[y1,y2], marker=matplotlib.markers.CARETDOWNBASE, 'k-')
+    cp = ax.contour(X, Y, Z, )
+
+    #mark the starting position with a red star
+    plt.plot(x_array[0][0], x_array[0][1], '*', markersize=10, color='red')
+
+    #mark the towers with a blue + sign
+    for i in range(0,2):
+        plt.plot(towers[i][0], towers[i][1], '+', markersize=10, color='blue')
+        
+    #draw the lines of our estimated position
+    for i in range(1, 60):
+        plt.plot((x_array[i-1][0],x_array[i][0]), (x_array[i-1][1],x_array[i][1]), linewidth=2.0, color="black")
+        plt.plot(x_array[i][0],x_array[i][1],"*", color="black", markersize=7)
+        fig1.canvas.draw()
+    plt.show()
+
 def estimate_position(towers, z):
     xi = [[2,2]]
     x_new1 = [2,2]
@@ -204,7 +197,7 @@ def estimate_position(towers, z):
         GZ1 = g(x, towers[:,0]) - z[i, 0]
         GZ2 = g(x, towers[:,1]) - z[i, 1]
         GZ3 = g(x, towers[:,2]) - z[i, 2]
-        printGZ(GZ1, GZ2, GZ3)
+        #printGZ(GZ1, GZ2, GZ3)
 
         x_new1 = x - HCt1*GZ1
         x_new2 = x - HCt2*GZ2
@@ -219,7 +212,8 @@ def estimate_position(towers, z):
         #print("x_new2", x_new2)
         #print("x_new3", x_new3)
         print("x_new", x_new)
-    #plt.show()
+    plotContour(xi, towers)
+    plt.show()
     pass
 
 
