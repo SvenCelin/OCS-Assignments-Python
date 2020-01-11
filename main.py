@@ -140,77 +140,15 @@ def plotContour(x_array, towers, size):
 
 def estimate_position(towers, z):
     xi = [[2.3,2.3]]
-    x_new1 = [2,2]
-    x_new2 = [2,2]
-    x_new3 = [2,2]
-    #  H = np.zeros((2,2))
-    H = [(np.eye(2) * 0.01), (np.eye(2) * 0.01), (np.eye(2) * 0.01)]
     H1 = np.eye(2) * 0.01 
-    H2 = np.eye(2) * 0.01 
-    H3 = np.eye(2) * 0.01 
     lamda = 0.6
-    #plt.figure(1)
     for i in range(60):
         x = xi[-1]
-        
-        """
-        #Koristi moje temporary varijable i poseban H za svaki toranj
-        for j in range(0, 3):
-            C = dg(x, towers[:,j])
-            Ct= np.transpose(C)
-            CtC = twoVecMult(Ct, C)
-
-            H[j] = lamda * H[j] + CtC
-            HCt = np.linalg.inv(H[j])@(Ct)
-
-            Z = g(x, towers[:, j]) - VectorElementMult(C, x)
-            ZCX = z[i, j] - VectorElementMult(C, x)
-            #GZ = g(x, towers[:,j]) - z[i, j]
-            GZ = z[i, j] - g(x, towers[:,j])
-        
-            #kalman filter
-            x = x + HCt*ZCX
-        """
-
-        """
-        #Koristi moje temporary varijable i jedan H za sve 
-        #trenutno najbliza aproksimacija
-        for j in range(0, 3):
-            C = dg(x, towers[:,j])
-            Ct= np.transpose(C)
-            CtC = twoVecMult(Ct, C)
-
-            H1 = lamda * H1 + CtC
-            HCt = np.linalg.inv(H1)@(Ct)
-
-            Z = g(x, towers[:, j]) - VectorElementMult(C, x)
-            ZCX = z[i, j] - VectorElementMult(C, x)
-            GZ = g(x, towers[:,j]) - z[i, j]
-            #GZ = z[i, j] - g(x, towers[:,j])
-        
-            #kalman filter
-            x = x + HCt*GZ
-        """
-
-        #Koristi njihov kod iz primjera i jedan H za sve
-        #trenutno najbliza aproksimacija
         for j in range(0, 3):
             H1 = lamda * H1 + np.outer(dg(x, towers[:,j]), dg(x, towers[:,j])) 
-            #x = x + np.linalg.inv(H1).dot(np.transpose(dg(x, towers[:,j]))).dot(z[i, j] - np.outer(dg(x, towers[:,j]), x))
             x = x + np.linalg.inv(H1).dot(dg(x, towers[:,j])).dot(g(x, towers[:,j]) - z[i, j])
-            #x = x + np.linalg.inv(H1).dot(dg(x, towers[:,j])).dot(z[i, j] - g(x, towers[:,j]))
-        
-        """
-        #Koristi njihov kod iz primjera i poseban H za svaki toranj
-        for j in range(0, 3):
-            H[j] = lamda * H[j] + np.outer(dg(x, towers[:,j]), dg(x, towers[:,j])) 
-            #x = x + np.linalg.inv(H[j]).dot(np.transpose(dg(x, towers[:,j]))).dot(z[i, j] - np.outer(dg(x, towers[:,j]), x))
-            #x = x + np.linalg.inv(H[j]).dot(dg(x, towers[:,j])).dot(g(x, towers[:,j]) - z[i, j])
-            x = x + np.linalg.inv(H[j]).dot(dg(x, towers[:,j])).dot(z[i, j] - g(x, towers[:,j]))
-        """
 
         xi.append(x)
-        print("x = ", x)
 
     plotContour(xi, towers, 60)
     pass
