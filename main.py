@@ -54,7 +54,7 @@ def calculateMeshZ(z_meas, x, y, towers, lamda, step):
     
     return 0.5*res
 
-def plotContour(x_array, z_meas, z_est, towers, lamda, size):
+def plotContour(x_array, z_meas, z_est, towers, lamda, size, startStep, stopStep):
     levels=[10, 30, 50]
     #plt.figure(1, figsize=(7,7))
     fig1 = plt.gcf()
@@ -66,7 +66,8 @@ def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     tempZ = []
 
     X, Y = np.meshgrid(x, y)
-
+    
+    """
     #get the height of the noise
     for i in x:
         for j in y:
@@ -74,6 +75,7 @@ def plotContour(x_array, z_meas, z_est, towers, lamda, size):
         z.append(tempZ)
         tempZ = []
     z = np.asarray(z)
+    """
     
 
     if(size == 60):
@@ -87,21 +89,21 @@ def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     fig, ax = plt.subplots()
     cp = ax.contour(X, Y, Z)
 
-    #mark the starting position with a red star
-    plt.plot(x_array[0][0], x_array[0][1], '*', markersize=10, color='red', label="starting position")
 
     #mark the towers with a blue + sign
     for i in range(0,3):
         plt.plot(towers[0][i], towers[1][i], '^', markersize=10, color='blue', label="towers")
         
     #draw the lines of our estimated position
-    for i in range(1, size):
+    for i in range(startStep+1, stopStep):
         plt.plot((x_array[i-1][0],x_array[i][0]), (x_array[i-1][1],x_array[i][1]), linewidth=2.0, color="black")
-        plt.plot(x_array[i][0],x_array[i][1],"*", color="black", markersize=7)
+        plt.plot(x_array[i-1][0],x_array[i-1][1],"*", color="black", markersize=7)
         fig1.canvas.draw()
     
+    #mark the starting position with a red star
+    plt.plot(x_array[startStep][0], x_array[startStep][1], '*', markersize=10, color='red', label="starting position")
     #draw the final position
-    plt.plot(x_array[size-1][0], x_array[size-1][1], 'D', markersize=5, color='green', label="final position")
+    plt.plot(x_array[stopStep][0], x_array[stopStep][1], 'D', markersize=5, color='green', label="final position")
 
     #show the labels
     handles, labels = plt.gca().get_legend_handles_labels()
@@ -109,13 +111,13 @@ def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     plt.legend(by_label.values(), by_label.keys())
     
     if(size == 60):
-        title = "Estimate position with lamda = " + str(lamda)
+        title = "Estimate position with lamda = " + str(lamda) + " and time steps: [" + str(startStep) + ", " + str(stopStep) + "]"
     else:
-        title = "Estimate motion with lamda = " + str(lamda)
+        title = "Estimate motion with lamda = " + str(lamda) + " and time steps: [" + str(startStep) + ", " + str(stopStep) + "]"
     plt.title(title)
     plt.show()
 
-def scatterPlotCourse(v, lamda):
+def scatterPlotCourse(v, lamda, startStep, stopStep):
     # Create data
     v = np.asarray(v)
     x = v[:, 0]
@@ -131,11 +133,11 @@ def scatterPlotCourse(v, lamda):
     plt.ylabel('y')
     plt.show()
 
-def estimate_position(towers, z, lamda):
+def estimate_position(towers, z, lamda, size, startStep, stopStep):
     xi = [[2.0,2.0]]
     H1 = np.eye(2) * 0.01 
     zest = []
-    for i in range(60):
+    for i in range(size):
         x = xi[-1]
         for j in range(0, 3):
             H1 = lamda * H1 + np.outer(dg(x, towers[:,j]), dg(x, towers[:,j])) 
@@ -144,17 +146,17 @@ def estimate_position(towers, z, lamda):
         zest.append([g(x, towers[:, 0]), g(x, towers[:, 1]), g(x, towers[:, 2])])
         xi.append(x)
 
-    plotContour(xi, z, zest, towers, lamda, 60)
+    plotContour(xi, z, zest, towers, lamda, size, startStep, stopStep)
     print("x_position final = ", xi[-1])
     pass
 
 
-def estimate_motion(towers, z, lamda):
+def estimate_motion(towers, z, lamda, size, startStep, stopStep):
     xi = [[-4,-20]]
     v = [[0, 0]]
     H1 = np.eye(2) * 0.01 
     zest = []
-    for i in range(0, 200):
+    for i in range(0, size):
         x = xi[-1] 
 
         for j in range(0, 3):
@@ -168,8 +170,8 @@ def estimate_motion(towers, z, lamda):
 
         xi.append(x)
         
-    plotContour(xi, z, zest, towers, lamda, 200)
-    scatterPlotCourse(v, lamda)
+    plotContour(xi, z, zest, towers, lamda, size, startStep, stopStep)
+    scatterPlotCourse(v, lamda, startStep, stopStep)
     print("x_motion final = ", xi[-1])
     pass
 
@@ -183,8 +185,8 @@ if __name__ == '__main__':
     z = data['z'] * np.pi/180
 
     print("START OF ESTIMATE POSITION!!\n")
-    estimate_position(towers, z, 0.6)
-    estimate_position(towers, z, 0.9)
+    estimate_position(towers, z, 0.6, 60, 0, 10)
+    estimate_position(towers, z, 0.9, 60, 5, 20)
 
     # load the data
     data = np.load('./data_motion.npz')
@@ -194,5 +196,5 @@ if __name__ == '__main__':
     z = data['z']
 
     print("START OF ESTIMATE MOTION!!\n")
-    estimate_motion(towers, z, 0.6)
-    estimate_motion(towers, z, 0.9)
+    estimate_motion(towers, z, 0.6, 200, 0, 50)
+    estimate_motion(towers, z, 0.9, 200, 75, 150)
