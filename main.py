@@ -119,6 +119,26 @@ def dg_motion(x, l):
     res = [x1, x2]
     return res
 
+def calculateMeshZ(z_meas, x, y, towers, lamda, step):
+    res = 0
+    tempRes = 0
+    #print("z_meas shape: ", np.asarray(z_meas).shape)
+    #print("x = ", x)
+    #print("x = ", y)
+    for j in range(0, 3):
+        #print("Iter: ", j)
+        for i in range(0, step):
+            x_arr = [x, y]
+            noise = z_meas[i, j] - g(x_arr, towers[:,j])
+            noise = np.power(noise, 2)
+            lamda = np.power(lamda, (step - i))
+            tempRes += lamda*noise
+        if(res > tempRes):
+            res = tempRes
+        tempRes = 0
+    
+    return 0.5*res
+
 def calculateZ(z_meas, z_est, lamda, step):
     res = 0
     tempRes = 0
@@ -134,36 +154,84 @@ def calculateZ(z_meas, z_est, lamda, step):
     
     return 0.5*res
 
+def getErrorRanges(z_meas, z_est, lamda, step):
+    min = 100000
+    max = 0
+    tempRes = 0
+    for j in range(0, 3):
+        for i in range(0, step):
+            noise = z_meas[i][j] - z_est[i][j]
+            noise = np.power(noise, 2)
+            lamda = np.power(lamda, (step - i))
+            tempRes += 0.5*lamda*noise
+        if(min > tempRes):
+            min = tempRes
+        if(max < tempRes):
+            max = tempRes
+        tempRes = 0
+    
+    res = [min, max]
+    return res
+
 def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     levels=[10, 30, 50]
     #plt.figure(1, figsize=(7,7))
     fig1 = plt.gcf()
 
     #Create a contour grid
-    x = np.linspace(-10, 20, 1000)
-    y = np.linspace(-10, 20, 1000)
+    #-4, -20
+    #2, 2
+    #err = getErrorRanges(z_meas, z_est, lamda, size)
+    x = np.linspace(-16, 15, 100)
+    y = np.linspace(-40, 10, 100)
     z = []
-    for i in range(0, size):
-        z.append(calculateZ(z_meas, z_est, lamda, i))
+    tempZ = []
 
-    X, Y, Z = np.meshgrid(x, y, z)
+    X, Y = np.meshgrid(x, y)
+
+
+    br_x = 0
+    br_y = 0
+    for i in x:
+        for j in y:
+            tempZ.append(calculateMeshZ(z_meas, i, j, towers, lamda, size))
+            br_y +=1
+        br_x +=1
+        br_y = 0
+        z.append(tempZ)
+        tempZ = []
+
+    print("for is done")
+    factor = 1
+    #Z = (((X+4)**2)/factor + ((Y+20)**2)/factor)
+    Z = (((X)**2)/factor + ((Y)**2)/factor)
+    print("X SHAPE ", X.shape)
+    print("Y SHAPE ", Y.shape)
+    print("Z SHAPE ", Z.shape)
+    print("small z SHAPE ", np.asarray(z).shape)
+    z = np.asarray(z)
+    #Z = np.logspace()
     fig, ax = plt.subplots()
-    cp = ax.contour(X, Y, Z)
+    cp = ax.contour(x, y, z)
 
     #mark the starting position with a red star
-    plt.plot(x_array[0][0], x_array[0][1], '*', markersize=10, color='red')
+    plt.plot(x_array[0][0], x_array[0][1], '*', markersize=10, color='red', label="starting position")
 
     #mark the towers with a blue + sign
     for i in range(0,3):
-        plt.plot(towers[0][i], towers[1][i], '+', markersize=10, color='blue')
+        plt.plot(towers[0][i], towers[1][i], '+', markersize=10, color='blue', label="towers")
         
     #draw the lines of our estimated position
     for i in range(1, size):
         plt.plot((x_array[i-1][0],x_array[i][0]), (x_array[i-1][1],x_array[i][1]), linewidth=2.0, color="black")
         plt.plot(x_array[i][0],x_array[i][1],"*", color="black", markersize=7)
         fig1.canvas.draw()
-    """
-    """
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    plt.legend(by_label.values(), by_label.keys())
+    
+    plt.title("title")
     plt.show()
 
 def scatterPlotCourse(v):
@@ -243,7 +311,7 @@ def estimate_position(towers, z):
         """
         xi.append(x)
 
-    #plotContour(xi, z, zest, towers, lamda, 60)
+    plotContour(xi, z, zest, towers, lamda, 60)
     #plt.tight_layout()
     #plt.show()
     pass
@@ -321,6 +389,22 @@ def estimate_motion(towers, z):
         #course 4: 152-200
         print("x = ", x, ", i = ", i)
         x0 = [xi[0][0], xi[0][1]]
+        """
+        k = i
+        if(i<54):
+            x0 = [xi[0][0], xi[0][1]]
+        elif(i < 102):
+            x0 = [xi[52][0], xi[52][1]]
+            k = i-53
+        elif(i < 152):
+            x0 = [xi[101][0], xi[101][1]]
+            k = i-101
+        else:
+            x0 = [xi[151][0], xi[151][1]]
+            k = i-151
+        """
+            
+
         v.append((x - x0)/(i+1))
 
         xi.append(x)
@@ -349,7 +433,7 @@ if __name__ == '__main__':
     #print("z = ", origZ)
 
     print("START OF ESTIMATE POSITION!!\n")
-    #estimate_position(towers, z)
+    estimate_position(towers, z)
 
     # load the data
     data = np.load('./data_motion.npz')
@@ -364,4 +448,4 @@ if __name__ == '__main__':
     #print('Measurements:', z.shape)
 
     print("START OF ESTIMATE MOTION!!\n")
-    estimate_motion(towers, z)
+    #estimate_motion(towers, z)
