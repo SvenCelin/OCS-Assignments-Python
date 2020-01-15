@@ -131,12 +131,10 @@ def scatterPlotCourse(v, lamda):
     plt.ylabel('y')
     plt.show()
 
-def estimate_position(towers, z):
-    xi = [[2.3,2.3]]
+def estimate_position(towers, z, lamda):
+    xi = [[2.0,2.0]]
     H1 = np.eye(2) * 0.01 
     zest = []
-
-    lamda = 0.6
     for i in range(60):
         x = xi[-1]
         for j in range(0, 3):
@@ -151,13 +149,11 @@ def estimate_position(towers, z):
     pass
 
 
-def estimate_motion(towers, z):
+def estimate_motion(towers, z, lamda):
     xi = [[-4,-20]]
     v = [[0, 0]]
     H1 = np.eye(2) * 0.01 
     zest = []
-
-    lamda = 0.9
     for i in range(0, 200):
         x = xi[-1] 
 
@@ -187,7 +183,8 @@ if __name__ == '__main__':
     z = data['z'] * np.pi/180
 
     print("START OF ESTIMATE POSITION!!\n")
-    estimate_position(towers, z)
+    estimate_position(towers, z, 0.6)
+    estimate_position(towers, z, 0.9)
 
     # load the data
     data = np.load('./data_motion.npz')
@@ -197,4 +194,5 @@ if __name__ == '__main__':
     z = data['z']
 
     print("START OF ESTIMATE MOTION!!\n")
-    estimate_motion(towers, z)
+    estimate_motion(towers, z, 0.6)
+    estimate_motion(towers, z, 0.9)
