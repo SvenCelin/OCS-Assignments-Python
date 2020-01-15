@@ -1,89 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-def printHValues(H, C, Ct, CtC):
-    print("H data: ", H)
-    print("C data: ", C)
-    print("Ct data: ", Ct)
-    print("CtC data: ", CtC)
-
-def printKalmanValues(HCt1, ZCX, GZ):
-    print("HCt data: ", HCt1)
-    print("ZCX data: ", ZCX)
-    print("GZ data: ", GZ)
-
-def printHShapes(H, C, Ct, CtC):
-    print("H shape: ", np.asarray(H).shape)
-    print("C shape: ", np.asarray(C).shape)
-    print("Ct shape: ", np.asarray(Ct).shape)
-    print("CtC shape: ", np.asarray(CtC).shape)
-
-def printKalmanShapes(HCt1, ZCX, GZ):
-    print("HCt shape: ", np.asarray(HCt1).shape)
-    print("ZCX shape: ", np.asarray(ZCX).shape)
-    print("GZ shape: ", np.asarray(GZ).shape)
-
-
-def printAngles(z):
-    t1 = 0
-    t2 = 0
-    t3 = 0
-    for i in range(60):
-        t1 += z[i][0]
-        t2 += z[i][1]
-        t3 += z[i][2]
-    t1 /=60
-    t2 /=60
-    t3 /=60
-
-    print("tower1 angle: ", t1)
-    print("tower2 angle: ", t2)
-    print("tower3 angle: ", t3)
-
-def printDistances(z, step):
-    t1 = 0
-    t2 = 0
-    t3 = 0
-    j = 0
-    z1 = []
-
-    for i in range(200):
-        t1 += z[i][0]
-        t2 += z[i][1]
-        t3 += z[i][2]
-
-        j = j+1
-        if(j == step):
-            z1.append([t1/step, t2/step, t3/step])
-            j = 0
-            t1 = 0
-            t2 = 0
-            t3 = 0
-    print("for step = ", step)
-    print("z1 = \n", np.asarray(z1))
-
-def VectorElementMult(C, x):
-    res = C[0]*x[0] + C[1]*x[1]
-    return res
-
-def twoVecMult(X, Y):
-    a = X[0]*Y[0]
-    b = X[0]*Y[1]
-    c = X[1]*Y[0]
-    d = X[1]*Y[1]
-    res = [
-        [a, b],
-        [c, d]
-    ]
-    return res
-
 def g(x, l):
     res = l[1] - x[1]
     res /= (l[0] - x[0])
     res = np.arctan(res)
-
-    #print("RES = ", res)
 
     return res
 
@@ -104,74 +25,34 @@ def dg(x, l):
     return res
 
 def g_motion(x, l):
-    #print("x shape", np.asarray(x).shape)
-    #print("l[0] - x[0] type = ", type(l[0] - x[0]))
     res = np.square(l[0] - x[0]) + np.square(l[1] - x[1])
     res = np.sqrt(res)
     return res
 
 def dg_motion(x, l):
-    #Nebi smio uzeti vector i podijeliti scalare sa vectorom
     g = g_motion(x, l)
     x1 = (x[0] - l[0])/g
     x2 = (x[1] - l[1])/g
 
-    res = [x1, x2]
+    res = [-x1, -x2]
     return res
 
 def calculateMeshZ(z_meas, x, y, towers, lamda, step):
-    res = 0
+    res = 100000
     tempRes = 0
-    #print("z_meas shape: ", np.asarray(z_meas).shape)
-    #print("x = ", x)
-    #print("x = ", y)
     for j in range(0, 3):
-        #print("Iter: ", j)
         for i in range(0, step):
             x_arr = [x, y]
             noise = z_meas[i, j] - g(x_arr, towers[:,j])
+            noise = np.abs(noise)
             noise = np.power(noise, 2)
-            lamda = np.power(lamda, (step - i))
+            lamda = np.power(lamda, (step - 1 - i))
             tempRes += lamda*noise
         if(res > tempRes):
             res = tempRes
         tempRes = 0
     
     return 0.5*res
-
-def calculateZ(z_meas, z_est, lamda, step):
-    res = 0
-    tempRes = 0
-    for j in range(0, 3):
-        for i in range(0, step):
-            noise = z_meas[i][j] - z_est[i][j]
-            noise = np.power(noise, 2)
-            lamda = np.power(lamda, (step - i))
-            tempRes += lamda*noise
-        if(res > tempRes):
-            res = tempRes
-        tempRes = 0
-    
-    return 0.5*res
-
-def getErrorRanges(z_meas, z_est, lamda, step):
-    min = 100000
-    max = 0
-    tempRes = 0
-    for j in range(0, 3):
-        for i in range(0, step):
-            noise = z_meas[i][j] - z_est[i][j]
-            noise = np.power(noise, 2)
-            lamda = np.power(lamda, (step - i))
-            tempRes += 0.5*lamda*noise
-        if(min > tempRes):
-            min = tempRes
-        if(max < tempRes):
-            max = tempRes
-        tempRes = 0
-    
-    res = [min, max]
-    return res
 
 def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     levels=[10, 30, 50]
@@ -179,62 +60,62 @@ def plotContour(x_array, z_meas, z_est, towers, lamda, size):
     fig1 = plt.gcf()
 
     #Create a contour grid
-    #-4, -20
-    #2, 2
-    #err = getErrorRanges(z_meas, z_est, lamda, size)
-    x = np.linspace(-16, 15, 100)
-    y = np.linspace(-40, 10, 100)
+    x = np.linspace(-20, 30, 100)
+    y = np.linspace(-40, 20, 100)
     z = []
     tempZ = []
 
     X, Y = np.meshgrid(x, y)
 
-
-    br_x = 0
-    br_y = 0
+    #get the height of the noise
     for i in x:
         for j in y:
             tempZ.append(calculateMeshZ(z_meas, i, j, towers, lamda, size))
-            br_y +=1
-        br_x +=1
-        br_y = 0
         z.append(tempZ)
         tempZ = []
-
-    print("for is done")
-    factor = 1
-    #Z = (((X+4)**2)/factor + ((Y+20)**2)/factor)
-    Z = (((X)**2)/factor + ((Y)**2)/factor)
-    print("X SHAPE ", X.shape)
-    print("Y SHAPE ", Y.shape)
-    print("Z SHAPE ", Z.shape)
-    print("small z SHAPE ", np.asarray(z).shape)
     z = np.asarray(z)
-    #Z = np.logspace()
+    
+
+    if(size == 60):
+        x_add = 4
+        y_add = 20
+    else:
+        x_add = -23
+        y_add = 6
+    factor = 1
+    Z = (((X+x_add)**2)/factor + ((Y+y_add)**2)/factor)
     fig, ax = plt.subplots()
-    cp = ax.contour(x, y, z)
+    cp = ax.contour(X, Y, Z)
 
     #mark the starting position with a red star
     plt.plot(x_array[0][0], x_array[0][1], '*', markersize=10, color='red', label="starting position")
 
     #mark the towers with a blue + sign
     for i in range(0,3):
-        plt.plot(towers[0][i], towers[1][i], '+', markersize=10, color='blue', label="towers")
+        plt.plot(towers[0][i], towers[1][i], '^', markersize=10, color='blue', label="towers")
         
     #draw the lines of our estimated position
     for i in range(1, size):
         plt.plot((x_array[i-1][0],x_array[i][0]), (x_array[i-1][1],x_array[i][1]), linewidth=2.0, color="black")
         plt.plot(x_array[i][0],x_array[i][1],"*", color="black", markersize=7)
         fig1.canvas.draw()
+    
+    #draw the final position
+    plt.plot(x_array[size-1][0], x_array[size-1][1], 'D', markersize=5, color='green', label="final position")
 
+    #show the labels
     handles, labels = plt.gca().get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
     plt.legend(by_label.values(), by_label.keys())
     
-    plt.title("title")
+    if(size == 60):
+        title = "Estimate position with lamda = " + str(lamda)
+    else:
+        title = "Estimate motion with lamda = " + str(lamda)
+    plt.title(title)
     plt.show()
 
-def scatterPlotCourse(v):
+def scatterPlotCourse(v, lamda):
     # Create data
     v = np.asarray(v)
     x = v[:, 0]
@@ -242,9 +123,10 @@ def scatterPlotCourse(v):
     colors = (0,0,0)
     area = np.pi*3
 
+
     # Plot
     plt.scatter(x, y, s=area, c=colors, alpha=0.5)
-    plt.title('Scatter plot of the course')
+    plt.title("Scatter plot of the course for lamda " + str(lamda))
     plt.xlabel('x')
     plt.ylabel('y')
     plt.show()
@@ -254,14 +136,7 @@ def estimate_position(towers, z):
     H1 = np.eye(2) * 0.01 
     zest = []
 
-    plot_z_meas_0 = []
-    plot_z_est_0 = []
-    plot_z_meas_1 = []
-    plot_z_est_1 = []
-    plot_z_meas_2 = []
-    plot_z_est_2 = []
-
-    lamda = 0.9
+    lamda = 0.6
     for i in range(60):
         x = xi[-1]
         for j in range(0, 3):
@@ -269,151 +144,37 @@ def estimate_position(towers, z):
             x = x + np.linalg.inv(H1).dot(dg(x, towers[:,j])).dot(g(x, towers[:,j]) - z[i, j])
 
         zest.append([g(x, towers[:, 0]), g(x, towers[:, 1]), g(x, towers[:, 2])])
-        #print("\nz_estimate = ", np.asarray(zest))
-        #print("z_measured = ", np.asarray(z[i]))
-
-        """
-        j = 0
-        plot_z_meas_0.append(z[i, j])
-        plot_z_est_0.append(zest[j])
-
-        plt.figure(5, figsize=(6,6))
-        plt.clf()
-        fig0 = plt.gcf()
-        plt.plot(plot_z_meas_0[:len(plot_z_est_0)], label='measurements', lw=2)
-        plt.plot(plot_z_est_0[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig0.canvas.draw()
-
-        j = 1
-        plot_z_meas_1.append(z[i, j])
-        plot_z_est_1.append(zest[j])
-
-        plt.figure(6, figsize=(6,6))
-        plt.clf()
-        fig1 = plt.gcf()
-        plt.plot(plot_z_meas_1[:len(plot_z_est_1)], label='measurements', lw=2)
-        plt.plot(plot_z_est_1[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig1.canvas.draw()
-
-        j = 2
-        plot_z_meas_2.append(z[i, j])
-        plot_z_est_2.append(zest[j])
-
-        plt.figure(7, figsize=(6,6))
-        plt.clf()
-        fig2 = plt.gcf()
-        plt.plot(plot_z_meas_2[:len(plot_z_est_2)], label='measurements', lw=2)
-        plt.plot(plot_z_est_2[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig2.canvas.draw()
-        """
         xi.append(x)
 
     plotContour(xi, z, zest, towers, lamda, 60)
-    #plt.tight_layout()
-    #plt.show()
+    print("x_position final = ", xi[-1])
     pass
 
 
 def estimate_motion(towers, z):
     xi = [[-4,-20]]
     v = [[0, 0]]
-    #  H = np.zeros((2,2))
     H1 = np.eye(2) * 0.01 
     zest = []
 
-    plot_z_meas_0 = []
-    plot_z_est_0 = []
-    plot_z_meas_1 = []
-    plot_z_est_1 = []
-    plot_z_meas_2 = []
-    plot_z_est_2 = []
-
     lamda = 0.9
-    #plt.figure(2)
     for i in range(0, 200):
-        #print("\n\nNEW MOTION ITERATION")
         x = xi[-1] 
 
         for j in range(0, 3):
             H1 = lamda * H1 + np.outer(dg_motion(x, towers[:,j]), dg_motion(x, towers[:,j])) 
-            x = x - np.linalg.inv(H1).dot(dg_motion(x, towers[:,j])).dot(g_motion(x, towers[:,j]) - z[i, j])
+            x = x + np.linalg.inv(H1).dot(dg_motion(x, towers[:,j])).dot(g_motion(x, towers[:,j]) - z[i, j])
             
         zest.append([g_motion(x, towers[:, 0]), g_motion(x, towers[:, 1]), g_motion(x, towers[:, 2])])
-        #print("\nz_estimate = ", np.asarray(zest))
-        #print("z_measured = ", np.asarray(z[i]))
-
-        """
-        j = 0
-        plot_z_meas_0.append(z[i, j])
-        plot_z_est_0.append(zest[j])
-
-        plt.figure(5, figsize=(6,6))
-        plt.clf()
-        fig0 = plt.gcf()
-        plt.plot(plot_z_meas_0[:len(plot_z_est_0)], label='measurements', lw=2)
-        plt.plot(plot_z_est_0[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig0.canvas.draw()
-
-        j = 1
-        plot_z_meas_1.append(z[i, j])
-        plot_z_est_1.append(zest[j])
-
-        plt.figure(6, figsize=(6,6))
-        plt.clf()
-        fig1 = plt.gcf()
-        plt.plot(plot_z_meas_1[:len(plot_z_est_1)], label='measurements', lw=2)
-        plt.plot(plot_z_est_1[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig1.canvas.draw()
-
-        j = 2
-        plot_z_meas_2.append(z[i, j])
-        plot_z_est_2.append(zest[j])
-
-        plt.figure(7, figsize=(6,6))
-        plt.clf()
-        fig2 = plt.gcf()
-        plt.plot(plot_z_meas_2[:len(plot_z_est_2)], label='measurements', lw=2)
-        plt.plot(plot_z_est_2[1:], label='estimate', lw=2)
-        plt.legend(loc='best')
-        fig2.canvas.draw()
-        """
-
-        #course 1: 0-53
-        #course 2: 54-101
-        #course 3: 102-151
-        #course 4: 152-200
-        print("x = ", x, ", i = ", i)
         x0 = [xi[0][0], xi[0][1]]
-        """
-        k = i
-        if(i<54):
-            x0 = [xi[0][0], xi[0][1]]
-        elif(i < 102):
-            x0 = [xi[52][0], xi[52][1]]
-            k = i-53
-        elif(i < 152):
-            x0 = [xi[101][0], xi[101][1]]
-            k = i-101
-        else:
-            x0 = [xi[151][0], xi[151][1]]
-            k = i-151
-        """
             
-
         v.append((x - x0)/(i+1))
 
         xi.append(x)
-        #print("x = ", x)
         
-    #plotContour(xi, z, zest, towers, lamda, 200)
-    scatterPlotCourse(v)
-    #plt.tight_layout()
-    #plt.show()
+    plotContour(xi, z, zest, towers, lamda, 200)
+    scatterPlotCourse(v, lamda)
+    print("x_motion final = ", xi[-1])
     pass
 
 if __name__ == '__main__':
@@ -425,13 +186,6 @@ if __name__ == '__main__':
     origZ = data['z']
     z = data['z'] * np.pi/180
 
-    #print('Towers:', towers.shape)
-    #print('Measurements:', z.shape)
-    print('Towers = ', towers)
-    #print("z = ", np.degrees(z))
-    #printAngles(np.degrees(z))
-    #print("z = ", origZ)
-
     print("START OF ESTIMATE POSITION!!\n")
     estimate_position(towers, z)
 
@@ -441,11 +195,6 @@ if __name__ == '__main__':
     towers = data['towers']
     # measurements
     z = data['z']
-    #print("z = ", z)
-    #printDistances(z, 10)
-
-    #print('Towers:', towers.shape)
-    #print('Measurements:', z.shape)
 
     print("START OF ESTIMATE MOTION!!\n")
-    #estimate_motion(towers, z)
+    estimate_motion(towers, z)
