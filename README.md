@@ -1,6 +1,6 @@
 # OCS Assignments
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/SvenCelin/OCS-Assignments-Python)
 
 ## Description
 
